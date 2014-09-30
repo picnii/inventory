@@ -1,0 +1,37 @@
+<form ng-submit="addDataSet(fields)">
+	<table class="table tableview table-striped" style="">
+		<thead>
+			<tr>
+				<th ng-repeat="field in fields" >{{field.name}}</th>
+				<th ng-show="can_control">
+					Controls
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="row in data_set">
+				<td ng-repeat="data in row">
+					<span ng-hide="data.is_update">{{data.value}}</span>
+					<input ng-show="data.is_update" type="{{data.type}}" ng-model="data.value">
+				</td>
+
+				<td ng-show="can_control">
+					
+					<a class="btn" ng-click="deleteDataSet(row)" href="">X</a>
+					<a class="btn" ng-click="updateDataSet(row)"  href="">U</a>
+					
+				</td>
+			</tr>
+			<tr class="create-control" ng-show="can_control" >
+				<td ng-repeat="field in fields">
+				
+					<input type="{{field.type}}" ng-model="field.model" placeholder="{{field.name}}">
+				</td>
+				<td ng-show="can_control">
+					<input type="submit" value="Create"/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+</form>
