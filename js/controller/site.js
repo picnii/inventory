@@ -1,0 +1,4 @@
+function MainCtrl($scope)
+{
+
+}

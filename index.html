@@ -1,0 +1,66 @@
+<html>
+<head>
+	<meta charset="utf-8"></meta>
+	<!-- LIB-->
+	<script type="text/javascript" src="lib/lodash.js"></script>
+	<script type="text/javascript" src="lib/Chart.min.js"></script>
+	<script type="text/javascript" src="lib/angular/angular.min.js"></script>
+	<script type="text/javascript" src="lib/angular/angular-route.min.js"></script>
+	<script type="text/javascript" src="lib/mobileangularjs/js/mobile-angular-ui.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="lib/mobileangularjs/css/mobile-angular-ui-base.min.css">
+	<link rel="stylesheet" type="text/css" href="lib/mobileangularjs/css/mobile-angular-ui-desktop.min.css">
+	<link rel="stylesheet" type="text/css" href="lib/mobileangularjs/css/mobile-angular-ui-hover.min.css">	
+	<script type="text/javascript" src="widget/widget.js"></script>
+
+	<!-- App-->
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script type="text/javascript" src="js/app.js"></script>
+	<script type="text/javascript" src="js/controller/site.js"></script>
+	<script type="text/javascript" src="js/controller/product.js"></script>
+</head>
+<body ng-app="pos">
+	
+<div class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="mainSidebar">
+  <h1 class="app-name">My App</h1>
+
+  <div class="scrollable">
+    <div class="scrollable-content">
+      <div class="list-group" toggle="off" bubble target="mainSidebar">
+        <a class="list-group-item" href="#/">Home <i class="fa fa-chevron-right pull-right"></i></a>
+        <a class="list-group-item" href="#/product">Product <i class="fa fa-chevron-right pull-right"></i></a>
+        <a class="list-group-item" href="#/sale">Sale <i class="fa fa-chevron-right pull-right"></i></a>
+        <a class="list-group-item" href="#/Bill">Bill <i class="fa fa-chevron-right pull-right"></i></a>
+        <a class="list-group-item" href="#/Bill">Setting <i class="fa fa-chevron-right pull-right"></i></a>
+        <!-- ... -->
+      </div>
+
+    </div>
+  </div>
+</div>
+
+	<div class="app">
+
+	  <!-- Navbars -->
+	  <div class="navbar navbar-app navbar-absolute-top">
+
+	      <div class="navbar-brand navbar-brand-center" yield-to="title">
+	        <span>My App</span>
+	      </div>
+
+	      <div class="btn-group pull-left">
+	        <div ng-click="toggle('mainSidebar')" class="btn btn-navbar sidebar-toggle">
+	          <i class="fa fa-bars"></i> Menu
+	        </div>
+	      </div>
+
+	      <div class="btn-group pull-right" yield-to="navbarAction">
+	       
+	      </div>
+	  </div>
+
+	  <div class="app-body">
+	      <ng-view class="app-content"></ng-view>
+	  </div>
+	</div>
+</body>
+</html>
