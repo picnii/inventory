@@ -1,0 +1,182 @@
+.bill-wrap
+{
+	padding-right: 150px;
+}
+
+.bill
+{
+	padding: 10px;
+	background: #face00;
+	width: 150px;
+	height: 150px;
+	display: inline-block;
+  	margin: 10px ;
+  	text-align: center;
+  	font-size: 16;
+}
+
+.bill span 
+{
+	margin-top: 50px;
+	display: inline-block;
+	color: red;
+
+}
+
+.home.page, order
+{
+	position: relative;
+}
+.home.page nav.menu
+{
+	position: absolute;
+	right:10px ;
+	height: 150px;
+	top: 10px;
+
+}
+.bill-create 
+{
+	font-size: 16;
+	color: yellow;
+	text-align: center;
+	background: red;
+	margin-bottom: 30px;
+}
+.bill-close 
+{
+	font-size: 16;
+	color: yellow;
+	text-align: center;
+	background: rgba(0, 92, 51, 1);
+	margin-bottom: 30px;
+}
+
+.bill-create span
+{
+	display: inline-block;
+	margin: 30px;
+}
+.bill-close span
+{
+	display: inline-block;
+	margin: 30px;
+}
+
+.order-wraper
+{
+	padding-right: 300px;
+}
+
+table tbody, table thead th
+{
+	text-align: center;
+}
+table thead
+{
+	background-color: #5D80F0;
+}
+.bill-name
+{
+	font-size: 30;
+}
+
+
+
+.order nav.scan
+{
+	position: absolute;
+	right:0px ;
+	width: 290px;
+	top: 10px;
+}
+
+nav.scan .scan-check
+{
+	display: inline-block;
+	font-size: 16;
+	text-align: center;
+
+}
+
+nav.scan .barcode 
+{
+	
+	background-color: rgb(245, 105, 105);
+	padding:30px;
+}
+
+nav.scan .touch 
+{
+    background-color: rgb(226, 241, 148);
+	padding: 30px;
+}
+
+nav.scan .barcode-input
+{
+	
+	background-color: rgb(245, 105, 105);
+	padding: 10px;
+}
+.app-content
+{
+	background-color: white;
+}
+
+.amount div
+{
+	display: inline-block;
+	font-size: 30;
+	background-color: #5D80F0;
+	padding: 30px;
+	margin-left: 10px;
+	color: white;
+}
+
+.amount div.amount-multi
+{
+	background-color: #5DF07A;
+}
+.discount
+{
+	font-size: 30px;
+	margin-left: 10px;
+	margin-top: 10px;
+	padding-top: 30px;
+	
+}
+.discount span
+{
+	background-color: green;
+	color: white;
+	padding:30px;
+}
+
+.touch-input
+{
+	background-color: rgb(226, 241, 148);
+	padding: 10px;
+}
+
+.hide
+{
+	display: none;
+}
+
+.touch-input .item
+{
+	display: inline-block;
+	padding-top: 20px;
+	padding-bottom: 20px;
+
+}
+
+.touch-input .item span
+{
+	padding: 20px;
+	background-color: #face00;
+}
+.touch-input .group-item .item span
+{
+	background-color: #0face0;
+}

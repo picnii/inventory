@@ -1,0 +1,79 @@
+<section class="order">
+	<div class="bill-name">
+		<span>Bill 01</span>
+	</div>
+	<div class="order-wraper">
+		<table class="table table-hover order">
+			<thead>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Count</th>
+				<th>Price</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in orders">
+					<td>{{item.number}}</td>
+					<td>{{item.name}}</td>
+					<td>{{item.count}}</td>
+					<td>{{item.price}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<nav class="scan">
+		<div>
+			<div class="barcode scan-check">
+				<a href="#/order"><span>BARCODE</span></a>
+			</div>
+			<div class="touch scan-check">
+				<span>TOUCH</span>
+			</div>
+		</div>
+		<div class="barcode-input hide">
+			<input type="text" class="form-control" placeholder="ใส่ Barcode">
+		</div>
+		<div class="touch-input ">
+			<section class="group-category">
+				<div class="item">
+					<span>GROUP 1</span>
+				</div>
+				<div class="item">
+					<span>GROUP 2</span>
+				</div>
+				<div class="item">
+					<span>GROUP 3</span>
+				</div>
+				<div class="item">
+					<span>GROUP 4</span>
+				</div>
+			</section>
+			<section class="group-item">
+				<div class="item">
+					<span>Item 1</span>
+				</div>
+				<div class="item">
+					<span>Item 2</span>
+				</div>
+				<div class="item">
+					<span>Item 3</span>
+				</div>
+				<div class="item">
+					<span>Item 4</span>
+				</div>
+			</section>
+		</div>
+	</nav>
+	<div class="amount">
+		<div class="amount-single">
+			x 1
+		</div>
+		<div class="amount-multi">
+			x ?
+		</div>
+	</div>
+	<div class="discount">
+		<span>Discount</span>
+	</div>
+
+</section>

@@ -6,12 +6,16 @@ var app = angular.module('pos', [
 ]).config(function($routeProvider) {
       $routeProvider.when('/', {
         // ...
-      	 templateUrl: 'pages/main.html',
+         templateUrl: 'pages/main.html',
          controller: 'MainCtrl'
       }).when('/product', {
         // ...
-      	 templateUrl: 'pages/product.html',
+         templateUrl: 'pages/product.html',
          controller: 'ProductCtrl'
+      }).when('/order', {
+        // ...
+         templateUrl: 'pages/order.html',
+         controller: 'OrderCtrl'
       });
       // ...
   });
