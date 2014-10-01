@@ -1,3 +1,41 @@
-<div class="discount clickable">
+<section class="paymet page">
+	<div class="order-wraper">
+		<table class="table table-striped table-hover order">
+			<thead>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Count</th>
+				<th>Price</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in orders">
+					<td>{{item.number}}</td>
+					<td>{{item.name}}</td>
+					<td>{{item.count}}</td>
+					<td>{{item.price}}</td>
+				</tr>
+				<tr>
+					<td colspan="3">Sub total</td>
+					<td>x,xxx</td>
+				</tr>
+				<tr>
+					<td colspan="3">Discount</td>
+					<td>x,xxx</td>
+				</tr>
+				<tr>
+					<td colspan="3">Tax</td>
+					<td>x,xxx</td>
+				</tr>
+				<tr>
+					<td colspan="3">Total Due</td>
+					<td>x,xxx</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="discount clickable">
 		<span>Discount</span>
 	</div>
+
+</section>
