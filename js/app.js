@@ -16,6 +16,10 @@ var app = angular.module('pos', [
         // ...
          templateUrl: 'pages/order.html',
          controller: 'OrderCtrl'
+      }).when('/payment', {
+        // ...
+         templateUrl: 'pages/payment.html',
+         controller: 'PaymentCtrl'
       });
       // ...
   });

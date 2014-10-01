@@ -96,7 +96,7 @@ nav.scan .scan-check
 	display: inline-block;
 	font-size: 16;
 	text-align: center;
-
+	cursor:hand;
 }
 
 nav.scan .barcode 
@@ -133,10 +133,12 @@ nav.scan .barcode-input
 	color: white;
 }
 
-.amount div.amount-multi
+.amount div.inactive
 {
-	background-color: #5DF07A;
+	background-color: #AAA;
 }
+
+
 .discount
 {
 	font-size: 30px;
@@ -168,7 +170,13 @@ nav.scan .barcode-input
 	display: inline-block;
 	padding-top: 20px;
 	padding-bottom: 20px;
+	cursor: hand;
 
+}
+
+.clickable, .s-btn
+{
+	cursor: hand;
 }
 
 .touch-input .item span
