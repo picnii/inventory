@@ -35,29 +35,29 @@
 	top: 10px;
 
 }
-.bill-create 
+
+.home.page nav.menu > div
 {
-	font-size: 16;
-	color: yellow;
-	text-align: center;
-	background: red;
 	margin-bottom: 30px;
-}
-.bill-close 
-{
-	font-size: 16;
-	color: yellow;
 	text-align: center;
-	background: rgba(0, 92, 51, 1);
-	margin-bottom: 30px;
+	font-size: 16;
+	background-color: #00FAD2;
 }
 
-.bill-create span
+.home.page nav.menu > div.bill-create 
 {
-	display: inline-block;
-	margin: 30px;
+	color: black;
+	background-color: rgb(0, 163, 255);
+	
 }
-.bill-close span
+
+.home.page nav.menu > div.bill-close 
+{
+	color: white;
+	background: rgba(0, 92, 51, 1);
+}
+
+.home.page nav.menu > div span
 {
 	display: inline-block;
 	margin: 30px;
@@ -83,7 +83,7 @@ table thead
 
 
 
-.order nav.scan
+.order.page nav.scan, .payment.page nav.scan
 {
 	position: absolute;
 	right:0px ;
@@ -187,4 +187,19 @@ nav.scan .barcode-input
 .touch-input .group-item .item span
 {
 	background-color: #0face0;
+}
+
+.bill.active
+{
+	background-color: #00face;
+}
+
+.bill.active span
+{
+	color:white;
+}
+
+.report.page
+{
+	text-align: center;;
 }

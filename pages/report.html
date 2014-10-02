@@ -1,0 +1,11 @@
+<section class="report page">
+	<h1>ยอดขายประจำวันนี้</h1>
+	<barchart id="sales-chart" data="sales" width="400" height="400" dirty-check="true" x="name" y="amount" fill-color="rgba(255,100,0,0.5)"></barchart>
+	<tableview  data="sales"  fields="fields" ></tableview>		
+</section>
+ <div class="navbar navbar-app navbar-absolute-bottom">
+    <div class="btn-group justified">
+      
+      <a href="#/" ng-click="closeShop()" class="btn btn-navbar btn-icon-only">ปิดร้าน</a>
+    </div>
+  </div>

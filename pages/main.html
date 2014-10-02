@@ -1,20 +1,18 @@
 <section class="home page">
 	<div class="bill-wrap">
-	<div class="bill"><span>Bill 01</span></div>
-	<div class="bill"><span>Bill 02</sapn></div>
-	<div class="bill"><span>Bill 03</span></div>
-	<div class="bill"><span>Bill 04</span></div>
-	<div class="bill"><span>Bill 05</span></div>
-	<div class="bill"><span>Bill 06</span></div>
-	<div class="bill"><span>Bill 07</span></div>
-	<div class="bill"><span>Bill 08</span></div>
+
+		<selectordiv ng-repeat="item in bills" class="bill"  text="{{item.name}}" selected="item.isSelected" on-selected="doSelect(item)"></selectordiv>
 	</div>
 	<nav class="menu">
-		<div class="bill-create">
-			<a href="#/order"><span>Create Bill</span></a>
+		
+		<div class="bill-create clickable" ng-click="goBill()">
+			<span>CREATE NEW BILL</span>
 		</div>
-		<div class="bill-close">
-			<span>End</span>
+		<div class="bill-edit clickable" ng-click="goBill()" >
+			<span>EDIT BILL</span>
+		</div>
+		<div class="bill-close clickable" ng-click="goPayment()">
+			<span>MAKE A PAYMENT</span>
 		</div>
 	</nav>
 </section>

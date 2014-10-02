@@ -1,4 +1,4 @@
-<section class="paymet page">
+<section class="payment page">
 	<div class="order-wraper">
 		<table class="table table-striped table-hover order">
 			<thead>
@@ -32,10 +32,51 @@
 				</tr>
 			</tbody>
 		</table>
+		<nav class="scan">
+			<header>
+				<div class="barcode scan-check" ng-click="switchTo('barcode');">
+					<span>CASH</span>
+				</div>
+				<div class="touch scan-check" ng-click="switchTo('touch');">
+					<span>CREDIT</span>
+				</div>
+			</header>
+			<section>
+				<div class="barcode-input {{cssBarcode}}">
+					<form ng-submit="doPayCash()">
+						<input id="barcode-input" type="text" class="form-control" placeholder="ใส่จำนวนเงิน">
+					</form>
+					<span style="font-size:40px;font-weight:bold;color:#face00;">รับ 100.00</span><br/>
+					<span style="font-size:40px;font-weight:bold;color:#face00;">ราคา 40.00</span><br/>
+					<span style="font-size:40px;font-weight:bold;color:#face00;">ทอน 60.00</span>
+				</div>
+				<div class="touch-input {{cssTouch}}">
+					<section class="group-category">
+						<div class="item" >
+							<span>VISA</span>
+						</div>
+						<div class="item" >
+							<span>MASTER CARD</span>
+						</div>
+					</section>
+				</div>
+			</section>
+			<footer>
+				PROMOTION CODE :
+				<form >
+					<input id="barcode" type="text" class="form-control" placeholder="ใส่ Barcode">
+				</form>
+
+			</footer>
+		</nav>
 	</div>
 
-	<div class="discount clickable">
-		<span>Discount</span>
-	</div>
 
 </section>
+<div class="navbar navbar-app navbar-absolute-bottom">
+    <div class="btn-group justified">
+      <a href="#/order" class="btn btn-navbar btn-icon-only">Back</a>
+      <a href="#/" class="btn btn-navbar btn-icon-only">CONFIRM</a>
+      <a href="" ng-click="print()" class="btn btn-navbar btn-icon-only">PRINT</a>
+    </div>
+  </div>

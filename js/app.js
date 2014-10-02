@@ -1,4 +1,4 @@
-var WIDGET_PATH = "../"
+var WIDGET_PATH = ""
 var app = angular.module('pos', [
   "widget",
   "ngRoute",
@@ -20,6 +20,10 @@ var app = angular.module('pos', [
         // ...
          templateUrl: 'pages/payment.html',
          controller: 'PaymentCtrl'
+      }).when('/report', {
+        // ...
+         templateUrl: 'pages/report.html',
+         controller: 'ReportCtrl'
       });
       // ...
   });

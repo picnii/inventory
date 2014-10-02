@@ -22,14 +22,14 @@
 	</div>
 
 	<nav class="scan">
-		<div>
+		<header>
 			<div class="barcode scan-check" ng-click="switchTo('barcode');">
 				<span>BARCODE</span>
 			</div>
 			<div class="touch scan-check" ng-click="switchTo('touch');">
 				<span>TOUCH</span>
 			</div>
-		</div>
+		</header>
 		<div class="barcode-input {{cssBarcode}}">
 			<form ng-submit="addItem()">
 				<input id="barcode-input" type="text" class="form-control" placeholder="ใส่ Barcode">
