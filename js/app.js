@@ -1,6 +1,7 @@
 var WIDGET_PATH = ""
 var app = angular.module('pos', [
   "widget",
+  "component",
   "ngRoute",
   "mobile-angular-ui",
 ]).config(function($routeProvider) {
@@ -24,6 +25,14 @@ var app = angular.module('pos', [
         // ...
          templateUrl: 'pages/report.html',
          controller: 'ReportCtrl'
+      }).when('/bill', {
+        // ...
+         templateUrl: 'pages/bill.html',
+         controller: 'BillCtrl'
+      }).when('/user', {
+        // ...
+         templateUrl: 'pages/user.html',
+         controller: 'UserCtrl'
       });
       // ...
   });

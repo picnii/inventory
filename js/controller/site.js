@@ -192,3 +192,39 @@ function ReportCtrl($scope)
 	}
 }
 
+
+
+function BillCtrl($scope)
+{
+	$scope.fields = [
+		{name:"Id", type:"text", slug:'id'},
+		{name:"Time", type:"text", slug:'time'},
+		{name:"Amount", type:"number", slug:'amount'}
+	];
+
+	$scope.bills = [
+		{id:"1", time:"2014-12-20 12:12:12", amount:4000},
+		{id:"2", time:"2014-12-20 12:12:12", amount:4500},
+		{id:"3", time:"2014-12-20 12:12:12", amount:6000},
+		{id:"4", time:"2014-12-20 12:12:12", amount:7000}
+	]
+
+}
+
+
+function UserCtrl($scope)
+{
+	$scope.fields = [
+		{name:"Username", type:"text", slug:'username'},
+		{name:"Name", type:"text", slug:'name'},
+		{name:"Lastname", type:"text", slug:'lastname'},
+		{name:"Telphone", type:"text", slug:'phone'},
+		{name:"Email", type:"email", slug:'email'}
+	];
+	$scope.users = [
+		  {id:1, username:"somchai", name:"somchai", lastname:"kulapalanont", phone:"082-452-3991", email:"somchai@kaipuk.com"},
+		  {id:2, username:"sommhai", name:"somchai", lastname:"kulapalanont", phone:"082-452-3991", email:"somchai@kaipuk.com"},
+		  {id:3, username:"somsak", name:"somchai", lastname:"kulapalanont", phone:"082-452-3991,", email:"somchai@kaipuk.com"},
+		  {id:4, username:"somsong", name:"somchai", lastname:"kulapalanont", phone:"082-452-3991", email:"somchai@kaipuk.com"}
+	]
+}

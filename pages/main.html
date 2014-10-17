@@ -1,7 +1,7 @@
 <section class="home page">
 	<div class="bill-wrap">
 
-		<selectordiv ng-repeat="item in bills" class="bill"  text="{{item.name}}" selected="item.isSelected" on-selected="doSelect(item)"></selectordiv>
+		<groupbill ng-repeat="item in bills" class="bill"  text="{{item.name}}" selected="item.isSelected" on-selected="doSelect(item)"></groupbill>
 	</div>
 	<nav class="menu">
 		
