@@ -1,0 +1,8 @@
+<div class="amount">
+	<div class="s-btn {{cssSingle}}" ng-click="cssMulti='inactive';cssSingle='';amount=1;">
+		x 1
+	</div>
+	<div class="s-btn {{cssMulti}}" ng-click="changeAmount();cssMulti='';cssSingle='inactive';">
+		x {{amountMulti}}
+	</div>
+</div>

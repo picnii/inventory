@@ -29,6 +29,10 @@ var app = angular.module('pos', [
         // ...
          templateUrl: 'pages/bill.html',
          controller: 'BillCtrl'
+      }).when('/bill/:id', {
+        // ...
+         templateUrl: 'pages/bill/item.html',
+         controller: 'BillItemCtrl'
       }).when('/user', {
         // ...
          templateUrl: 'pages/user.html',

@@ -1,0 +1,45 @@
+<nav class="scan">
+		<header>
+			<div class="barcode scan-check" ng-click="switchTo('barcode');">
+				<span>BARCODE</span>
+			</div>
+			<div class="touch scan-check" ng-click="switchTo('touch');">
+				<span>TOUCH</span>
+			</div>
+		</header>
+		<div class="barcode-input {{cssBarcode}}">
+			<form ng-submit="addItem()">
+				<input id="barcode-input" type="text" ng-model="scanner_input" class="form-control" placeholder="ใส่ Barcode">
+			</form>
+		</div>
+		<div class="touch-input {{cssTouch}}">
+			<section class="group-category {{cssGroup}}">
+				<div class="item" ng-click="switchTo('item');">
+					<span>GROUP 1</span>
+				</div>
+				<div class="item" ng-click="switchTo('item');">
+					<span>GROUP 2</span>
+				</div>
+				<div class="item" ng-click="switchTo('item');">
+					<span>GROUP 3</span>
+				</div>
+				<div class="item" ng-click="switchTo('item');">
+					<span>GROUP 4</span>
+				</div>
+			</section>
+			<section class="group-item {{cssItem}}">
+				<div class="item" ng-click="addItem()">
+					<span>Item 1</span>
+				</div>
+				<div class="item"  ng-click="addItem()">
+					<span>Item 2</span>
+				</div>
+				<div class="item"  ng-click="addItem()">
+					<span>Item 3</span>
+				</div>
+				<div class="item" ng-click="addItem()">
+					<span>Item 4</span>
+				</div>
+			</section>
+		</div>
+</nav>
