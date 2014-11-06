@@ -4,14 +4,14 @@
 	</div>
 	<listorder orders="orders"></listorder>
 
-	<scanner on-additem="addItem"></scanner>
+	<scanner on-additem="addItem" products="products"></scanner>
 
 	<amountbill amount="amount"></amountbill>
 	
 	 <div class="navbar navbar-app navbar-absolute-bottom">
 	    <div class="btn-group justified">
 	      <a href="#/" class="btn btn-navbar btn-icon-only">Back</a>
-	      <a href="#/payment" class="btn btn-navbar btn-icon-only">CONFIRM</a>
+	      <a href="#/payment/{{bill.id}}" class="btn btn-navbar btn-icon-only">CONFIRM</a>
 	       <a  ng-click="cancleBill()" class="btn btn-navbar btn-icon-only" style="color:red;">CANCLE BILL</a>
 	    </div>
 	  </div>

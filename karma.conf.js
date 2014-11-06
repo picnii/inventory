@@ -18,7 +18,7 @@ module.exports = function(config) {
       'lib/angular/angular.min.js',
       'lib/angular/angular-route.min.js',
       'lib/angular/angular-mocks.js',
-        'lib/*.js',
+      'lib/*.js',
       'lib/**/js/*.js',
       'js/app.js',
       'widget/widget.js',

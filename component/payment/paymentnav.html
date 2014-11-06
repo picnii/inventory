@@ -20,12 +20,16 @@
 		</div>
 		<div class="touch-input {{cssTouch}}">
 			<section class="group-category">
-				<div class="item" >
-					<span ng-click="doPayment()">VISA</span>
+				<div class="item" ng-repeat="credit in credits">
+					<span ng-click="selectCredit(credit)">{{credit.name}}</span>
+					&nbsp;
 				</div>
-				<div class="item" >
-					<span ng-click="doPayment()">MASTER CARD</span>
+				<div ng-show="isCreditSelected">
+					{{creditExplanation}}<br/>
+					<span style="font-size:40px;font-weight:bold;color:#face00;">ยอดชำระ {{total_credit_payment}}</span><br/>
+					<button class="btn btn-lg btn-primary">PAY</button>
 				</div>
+				
 			</section>
 		</div>
 	</section>

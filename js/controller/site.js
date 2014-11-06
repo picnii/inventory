@@ -1,30 +1,18 @@
-function MainCtrl($scope, $location, Bill)
+function MainCtrl($scope, $location, Bill, $filter)
 {
 
-	$scope.bills = Bill.query();/*[
-		{name:"BILL1", isSelected:false},
-		{name:"BILL2", isSelected:false},
-		{name:"BILL3", isSelected:false},
-		{name:"BILL3", isSelected:false}
-	]*/
-	
-	$scope.deSelectAll = function()
+	$scope.bills = Bill.query();
+	$scope.createBill = function()
 	{
-		for(var i = 0; i <= $scope.bills.length; i++)
-			$scope.bills[i].isSelected = false;
+		var bill = Bill.create();
+		$location.path('/order/' + bill.id);
 	}
 
-	$scope.doSelect = function(item)
+	$scope.editBill = function()
 	{
-		console.log('test')
-		//$scope.deSelectAll();
-		//item.isSelected = true;
-		//console.log($scope.bills)
-	}
-
-	$scope.goBill = function()
-	{
-		$location.path('/order');
+		var selectedBills = $filter("filter")($scope.bills, {isSelected:true});
+		var selectedBill = selectedBills[0];
+		$location.path('/order/' + selectedBill.id)
 	}
 
 	$scope.goPayment = function()
@@ -34,19 +22,11 @@ function MainCtrl($scope, $location, Bill)
 
 }
 
-function LoginCtrl($scope)
+function OrderCtrl($scope, $location, $routeParams, Bill, Product)
 {
-	console.log('test');
-}
-
-function OrderCtrl($scope, $location)
-{
-	$scope.orders = [
-		{number:1, name:"PomadeA", count:1, price:700},
-		{number:2, name:"PomadeB", count:1, price:1400},
-		{number:3, name:"PomadeC", count:1, price:750},
-		{number:4, name:"PomadeD", count:1, price:200}
-	];
+	$scope.bill = Bill.get($routeParams.id);
+	$scope.orders = $scope.bill.products;
+	$scope.products = Product.query();
 
 	$scope.cancleBill = function()
 	{
@@ -57,26 +37,27 @@ function OrderCtrl($scope, $location)
 		}
 	}
 
-	$scope.addItem = function()
+	$scope.addItem = function(item)
 	{
-		$scope.orders.push({
-			number:($scope.orders[$scope.orders.length-1].number + 1),
-			name:"TEST",
-			count:$scope.amount,
-			price:($scope.amount * 400)
-		})
+		var index = _.findIndex($scope.orders, {number:item.number})
+		if(index == -1 )
+		{
+			item.number = $scope.orders.length + 1;
+			item.count = $scope.amount;
+			$scope.orders.push(item);
+		}else
+			$scope.orders[index].count += $scope.amount;
+
 	}
 
 }
 
-function PaymentCtrl($scope, $location)
+function PaymentCtrl($scope, $location, $routeParams, Bill, Payment)
 {
-	$scope.orders = [
-		{number:1, name:"PomadeA", count:1, price:700},
-		{number:2, name:"PomadeB", count:1, price:1400},
-		{number:3, name:"PomadeC", count:1, price:750},
-		{number:4, name:"PomadeD", count:1, price:200}
-	];
+	$scope.bill = Bill.get($routeParams.id);
+	$scope.orders = $scope.bill.products;
+	$scope.Payment = Payment.get();
+	$scope.discount = 0;
 
 	$scope.print =function(){
 		alert("จำลองว่า print")

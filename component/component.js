@@ -71,7 +71,8 @@ angular.module("component", [])
 		templateUrl: "component/order/scanner.html",
 		replace: true,
 		scope: {
-			callback_add_item: "=onAdditem"
+			callback_add_item: "=onAdditem",
+			products: "="
 		},
 		link: function (scope, element, attrs)
 		{
@@ -110,18 +111,42 @@ angular.module("component", [])
 				}
 			}
 			scope.switchTo(scope.mode);
-			scope.addItem = function()
+
+			scope.initTouch = function()
 			{
-				if(scope.mode == MODE_ITEM)
-					scope.switchTo(MODE_TOUCH)
-				scope.callback_add_item();
+				var group_obj  = _.groupBy(scope.products, 'type');
+				scope.groups = [];
+				for(var key in group_obj)
+				{
+					var obj = {name:key, items:group_obj[key]};
+					scope.groups.push(obj);
+				}
+				scope.selectedGroup = {};
+				//scope.products
+			}
+			scope.initTouch();
+
+			scope.addBarcodeItem = function()
+			{
+				var item = _.find(scope.products, {code:scope.scanner_input});
+				if(_.isObject(item))
+					scope.callback_add_item(item);
 				scope.scanner_input = "";
-				console.log(scope.scanner_input)
+			}
+
+			scope.selectGroup = function(group)
+			{
+				scope.selectedGroup = group;
+				scope.switchTo(MODE_ITEM);
+			}
+
+			scope.addItem = function(item)
+			{
+				scope.callback_add_item(item);
+				scope.switchTo(MODE_TOUCH);
 			}
 		}
 	}
-
-
 }).directive("amountbill", function () {
 	return {
 		restrict: "E",
@@ -177,7 +202,8 @@ angular.module("component", [])
 		replace: true,
 		scope: {
 			total:"=",
-			payment_callback:"=onPaid"
+			payment_callback:"=onPaid",
+			credits:"="
 		},
 		link: function (scope, element, attrs)
 		{
@@ -228,6 +254,22 @@ angular.module("component", [])
 			scope.doPayment = function()
 			{
 				scope.payment_callback();
+			}
+			scope.isCreditSelected = false;
+
+			scope.selectCredit = function(credit)
+			{
+				console.log('select credit');
+				console.log(credit)
+				scope.isCreditSelected = true;
+				scope.creditExplanation = "Charge " + credit.chargePercent + " % + " + credit.chargeAmount;
+				scope.total_credit_payment = scope.total + (scope.total * credit.chargePercent / 100) + credit.chargeAmount;
+
+			}
+
+			scope.payWithCredit = function(credit)
+			{
+
 			}
 
 			scope.switchTo(scope.mode);
@@ -453,7 +495,7 @@ angular.module("component", [])
 			{
 				console.log('attempt to remove')
 				console.log(scope.selectedProducts)
-				_.remove(scope.selectedProducts, {id:product.id})
+				_.remove(scope.selectedProducts, {id:product.item_id})
 			}
 
 			scope.addProduct = function()

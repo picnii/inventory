@@ -13,11 +13,11 @@ var app = angular.module('pos', [
         // ...
          templateUrl: 'pages/product.html',
          controller: 'ProductCtrl'
-      }).when('/order', {
+      }).when('/order/:id', {
         // ...
          templateUrl: 'pages/order.html',
          controller: 'OrderCtrl'
-      }).when('/payment', {
+      }).when('/payment/:id', {
         // ...
          templateUrl: 'pages/payment.html',
          controller: 'PaymentCtrl'
@@ -65,16 +65,79 @@ var app = angular.module('pos', [
       // ...
   });
 
-app.factory('Bill', function(){
+
+app.factory('Product', function(){
+  var products = [
+        {id:"1",code:"12345679" , name:"เยลสุดสวย", type:"เยล", picture:"http://placehold.it/100x100", price:50, description:"nope", import_cost:20, count:20 },
+        {id:"2",code:"23412455", name:"เยลลี่", type:"เยล", picture:"http://placehold.it/100x100", price:60, description:"nope", import_cost:15, count:10 },
+        {id:"3",code:"12312398", name:"เยลโจ๊กคะนอ", type:"Hard Gel",    picture:"http://placehold.it/100x100", price:70, description:"nope", import_cost:34, count:30 },
+        {id:"4",code:"21321384", name:"ยอโค๊กับเจล", type:"Hard Gel", picture:"http://placehold.it/100x100", price:80, description:"nope", import_cost:56, count:40 },
+        {id:"5",code:"12321341", name:"เจลนี่แหละ", type:"เยล", picture:"http://placehold.it/100x100", price:90, description:"nope", import_cost:40, count:50 }
+      ];
+  return {
+    query:function()
+    {
+      return products;
+    },
+    get:function(product)
+    {
+      return _.find(products, {id:product.id});
+    },
+    sold:function(items)
+    {
+      var amount = 0;
+      _(items).forEach(function(item){
+        console.log('each');
+        console.log(item);
+        var index = _.findIndex(products, {id:item.id});
+        console.log(index)
+        if(index >= 0)
+        {
+          amount += products[index].price * item.amount;
+          products[index].count -= item.amount;
+        }
+      })
+      return amount;
+    },
+    save:function(product)
+    {
+
+    },
+    getAll:function(){
+      return [
+        {id:1, name:"เยลสุดสวย", type:"เยล", picture:"http://placehold.it/100x100", price:50, description:"nope", import_cost:20, count:20 },
+        {id:2, name:"เยลลี่", type:"เยล", picture:"http://placehold.it/100x100", price:60, description:"nope", import_cost:15, count:10 },
+        {id:3, name:"เยลโจ๊กคะนอ", type:"เยล", type:"เยล", picture:"http://placehold.it/100x100", price:70, description:"nope", import_cost:34, count:30 },
+        {id:4, name:"ยอโค๊กับเจล", type:"เยล", picture:"http://placehold.it/100x100", price:80, description:"nope", import_cost:56, count:40 },
+        {id:5, name:"เจลนี่แหละ", type:"เยล", picture:"http://placehold.it/100x100", price:90, description:"nope", import_cost:40, count:50 }
+      ];
+    },
+    getListItems:function()
+    {
+      return [
+        {id:"*", name:"ANY", type:"ANY"},
+        {id:1, name:"เยลสุดสวย", type:"เยล"},
+        {id:2, name:"เยลลี่", type:"เยล" },
+        {id:3, name:"เยลโจ๊กคะนอ", type:"เยล" },
+        {id:4, name:"ยอโค๊กับเจล", type:"เยล" },
+        {id:5, name:"เจลนี่แหละ", type:"เยล" }
+        ]
+    }
+
+  }
+
+})
+
+app.factory('Bill', function(Product){
   var bills = [];
   var paid_bills = [];
 
   function getItemsId(items)
   {
     if(items.length == 0)
-      return 1;
+      return "1";
     else
-      return bills[bills.length -1 ].id + 1;
+      return Number(bills[bills.length -1 ].id) + 1 + "";
   }
 
   return {
@@ -86,7 +149,7 @@ app.factory('Bill', function(){
     {
       var id = getItemsId(bills);
       var create_time = new Date();
-      var new_obj = {id:id, isSelected:false, name:"BILL " + id, create_time:create_time};
+      var new_obj = {id:id, isSelected:false, name:"BILL " + id, create_time:create_time, products:[]};
       bills.push(new_obj);
       return new_obj;
     },
@@ -100,6 +163,7 @@ app.factory('Bill', function(){
     },
     get:function(id)
     {
+     
       return _.find(bills, {id:id});  
     },
     findAllpaidBill:function(arg)
@@ -113,11 +177,7 @@ app.factory('Bill', function(){
         return false;
       bill = _.cloneDeep(bill);
       _.remove(bills, {id:id});   
-      var paid_amount = 0;
-      for(var i =0; i < bill.products.length;i++)
-      {
-        paid_amount += bill.products[i].amount * bill.products[i].price;
-      }
+      var paid_amount = Product.sold(bill.products);
       var create_time = new Date();
       paid_bills.push({
         id:getItemsId(paid_bills),
@@ -129,33 +189,29 @@ app.factory('Bill', function(){
     }
   }
 });
-  
-app.factory('Product', function(){
-	return {
-		getAll:function(){
-			return [
-				{id:1, name:"เยลสุดสวย", type:"เยล", picture:"http://placehold.it/100x100", price:50, description:"nope", import_cost:20, count:20 },
-				{id:2, name:"เยลลี่", type:"เยล", picture:"http://placehold.it/100x100", price:60, description:"nope", import_cost:15, count:10 },
-				{id:3, name:"เยลโจ๊กคะนอ", type:"เยล", type:"เยล", picture:"http://placehold.it/100x100", price:70, description:"nope", import_cost:34, count:30 },
-				{id:4, name:"ยอโค๊กับเจล", type:"เยล", picture:"http://placehold.it/100x100", price:80, description:"nope", import_cost:56, count:40 },
-				{id:5, name:"เจลนี่แหละ", type:"เยล", picture:"http://placehold.it/100x100", price:90, description:"nope", import_cost:40, count:50 }
-			];
-		},
-    getListItems:function()
+
+app.factory('Payment', function()
+{
+  return {
+    get:function()
     {
-      return [
-        {id:"*", name:"ANY", type:"ANY"},
-        {id:1, name:"เยลสุดสวย", type:"เยล"},
-        {id:2, name:"เยลลี่", type:"เยล" },
-        {id:3, name:"เยลโจ๊กคะนอ", type:"เยล" },
-        {id:4, name:"ยอโค๊กับเจล", type:"เยล" },
-        {id:5, name:"เจลนี่แหละ", type:"เยล" }
-        ]
+      return {tax:7, credits:[
+          {id:1, name:"MASTER", chargePercent:0.7, chargeAmount:0.25},
+          {id:2, name:"VISA", chargePercent:0.8, chargeAmount:0.1}
+        ]};
+    },
+    load:function()
+    {
+
+    },
+    save:function(payment)
+    {
+
     }
+  }
 
-	}
-
-})
+});
+  
 
 app.factory('User', function(){
   return {
