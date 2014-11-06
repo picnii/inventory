@@ -1,0 +1,29 @@
+<section>
+<div ng-repeat="condition in conditions">
+
+	<!-- Each Condition -->
+	Conditon : 
+	<input type="hidden" ng-model="condition.type">
+	 <select ng-model="condition.selectedType" ng-options="type.name for type in conditionTypes" ng-change="updateType(condition)"></select>
+	 <button class="btn btn-danger" ng-click="removeCondition(condition)">X</button>
+	 <div ng-if="condition.type == CON_TYPE_ITEM_SET">
+	 
+	 	<div ng-repeat="item in condition.items">
+
+	 		<!-- Each Item -->
+	 		When buy 
+	 		<input type="hidden" ng-model="item.item_id">
+	 		 <select ng-model="item.item" ng-options="iteml.name for iteml in itemAlls" ng-change="updateItem(item)">
+	 		 	</select> X 
+	 		 <input type="number" ng-model="item.amount" placeholder="Amount"> 
+
+	 	</div>
+	 	<button class="btn btn-lg btn-info" ng-click="addItem(condition.items)">+ Item</button>
+	 </div>
+	 <div ng-if="condition.type == CON_TYPE_MONEY">
+	 	When buy >= 
+		 <input type="number" ng-model="condition.value" placeholder="ยอดซื้อ">
+	</div>
+</div>
+<button class="btn btn-lg {{conditionCss}}" ng-click="addCondition()">+ Condition</button>
+</section>

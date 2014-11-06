@@ -1,0 +1,18 @@
+<section>
+  Reward
+ <input type="hidden" ng-model="reward.type">
+ <select ng-model="reward.selectedType" ng-options="type.name for type in rewardTypes" ng-change="updateType()"></select>
+
+	<div ng-if="reward.type == REWARD_TYPE_ITEM_BACK">
+		Get
+		<div ng-repeat="item in reward.items">
+	 		<!-- Each Item -->
+	 		 <input type="hidden" ng-model="item.item_id">
+	 		 <select ng-model="item.item" ng-options="item.name for item in itemAlls" ng-change="updateItem(item)"></select> X 
+	 		 <input type="number" ng-model="item.amount">
+	 	</div>
+	</div>
+	<div ng-if="reward.type == REWARD_TYPE_DISCOUNT_AMOUNT || reward.type == REWARD_TYPE_DISCOUNT_PERCENT">
+		Get discount <input type="number" ng-model="item.value"> {{percentTxt}}
+	</div>
+</section>

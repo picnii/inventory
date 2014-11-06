@@ -1,0 +1,18 @@
+<table class="table table-striped table-hover order">
+		<thead>
+			<th>ID</th>
+			<th>NAME</th>
+			<th>DETAIL</th>
+			<th>TIME</th>
+			<th></th>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in promotions">
+				<td>{{item.id}}</td>
+				<td>{{item.name}}</td>
+				<td>{{item.detail}}</td>
+				<td>{{item.time}}</td>
+				<td><a href="#/promotion/{{item.id}}" class="btn btn-lg btn-danger">View</a></td>
+			</tr>
+		</tbody>
+	</table>	

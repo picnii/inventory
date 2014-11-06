@@ -1,0 +1,9 @@
+<section>
+<div ng-repeat="product in selectedProducts">
+ <input type="hidden" ng-model="product.id">
+  <select ng-model="product.item" ng-options="item.name for item in products" ng-change="updateProduct(product)"></select>
+  <input type="number" ng-model="product.amount" placeholder="Amount">
+  <button class="btn btn-danger" ng-click="removeProduct(product)">X</button>
+ </div>
+ <button class="btn btn-primary" ng-click="addProduct()">+Product</button>
+</section>

@@ -10,19 +10,21 @@
 	<section>
 		<div class="barcode-input {{cssBarcode}}">
 			<form ng-submit="doPayCash()">
-				<input id="barcode-input" type="text" class="form-control" placeholder="ใส่จำนวนเงิน">
+				<input id="barcode-input" ng-model="input" type="text" class="form-control" placeholder="ใส่จำนวนเงิน">
 			</form>
-			<span style="font-size:40px;font-weight:bold;color:#face00;">รับ 100.00</span><br/>
-			<span style="font-size:40px;font-weight:bold;color:#face00;">ราคา 40.00</span><br/>
-			<span style="font-size:40px;font-weight:bold;color:#face00;">ทอน 60.00</span>
+			<span style="font-size:40px;font-weight:bold;color:#face00;">ราคา {{total}}</span><br/>
+			<div ng-show="isPaid">
+				<span style="font-size:40px;font-weight:bold;color:#face00;">ชำระ {{payAmount}}</span><br/>
+				<span style="font-size:40px;font-weight:bold;color:#face00;">ทอน {{payAmount - total}}</span><br/>
+			</div>
 		</div>
 		<div class="touch-input {{cssTouch}}">
 			<section class="group-category">
 				<div class="item" >
-					<span>VISA</span>
+					<span ng-click="doPayment()">VISA</span>
 				</div>
 				<div class="item" >
-					<span>MASTER CARD</span>
+					<span ng-click="doPayment()">MASTER CARD</span>
 				</div>
 			</section>
 		</div>

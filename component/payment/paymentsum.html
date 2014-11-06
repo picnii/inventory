@@ -1,0 +1,32 @@
+<table class="table table-striped table-hover order">
+			<thead>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Count</th>
+				<th>Price</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in orders">
+					<td>{{item.number}}</td>
+					<td>{{item.name}}</td>
+					<td>{{item.count}}</td>
+					<td>{{item.price}}</td>
+				</tr>
+				<tr>
+					<td colspan="3">Sub total</td>
+					<td>{{subTotalAmount}}</td>
+				</tr>
+				<tr>
+					<td colspan="3">Discount</td>
+					<td>{{discount}}</td>
+				</tr>
+				<tr>
+					<td colspan="3">Tax {{tax}}%</td>
+					<td>{{taxAmount}}</td>
+				</tr>
+				<tr>
+					<td colspan="3">Total Due</td>
+					<td>{{total}}</td>
+				</tr>
+			</tbody>
+		</table>

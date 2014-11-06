@@ -1,12 +1,12 @@
-function MainCtrl($scope, $location)
+function MainCtrl($scope, $location, Bill)
 {
-	console.log('Hi');
-	$scope.bills = [
+
+	$scope.bills = Bill.query();/*[
 		{name:"BILL1", isSelected:false},
 		{name:"BILL2", isSelected:false},
 		{name:"BILL3", isSelected:false},
 		{name:"BILL3", isSelected:false}
-	]
+	]*/
 	
 	$scope.deSelectAll = function()
 	{
@@ -77,43 +77,6 @@ function PaymentCtrl($scope, $location)
 		{number:3, name:"PomadeC", count:1, price:750},
 		{number:4, name:"PomadeD", count:1, price:200}
 	];
-//will move to directive later
-	var MODE_BARCODE = 'barcode', MODE_TOUCH  = 'touch';
-	var MODE_GROUP = 'group',  MODE_ITEM = 'item';
-	$scope.mode = MODE_BARCODE;
-	$scope.touch_mode = MODE_GROUP;
-	$scope.switchTo = function(mode)
-	{
-		$scope.mode = mode;
-		if($scope.mode == 'barcode')
-		{
-			$scope.cssBarcode = '';
-			$scope.cssTouch = "hide";
-			setInterval(function(){
-
-				document.getElementById('barcode-input').focus();
-			}, 10)
-			
-		}else if($scope.mode == MODE_TOUCH)
-		{
-			$scope.touch_mode = MODE_GROUP;
-			$scope.cssTouch = '';
-			$scope.cssBarcode = "hide";
-			$scope.cssGroup ='';
-			$scope.cssItem = 'hide';
-		}else if($scope.mode == MODE_GROUP)
-		{
-			$scope.cssGroup ='';
-			$scope.cssItem = 'hide';
-		}else if($scope.mode == MODE_ITEM)
-		{
-			$scope.cssGroup = 'hide';
-			$scope.cssItem = ';'
-		}
-	}
-
-
-	$scope.switchTo($scope.mode);
 
 	$scope.print =function(){
 		alert("จำลองว่า print")
@@ -157,10 +120,11 @@ function BillCtrl($scope)
 		{id:"4", time:"2014-12-20 12:12:12", amount:7000}
 	]
 
+
 }
 
 
-function UserCtrl($scope)
+function UserCtrl($scope, User)
 {
 	$scope.fields = [
 		{name:"Username", type:"text", slug:'username'},
@@ -169,15 +133,10 @@ function UserCtrl($scope)
 		{name:"Telphone", type:"text", slug:'phone'},
 		{name:"Email", type:"email", slug:'email'}
 	];
-	$scope.users = [
-		  {id:1, username:"somchai", name:"somchai", lastname:"kulapalanont", phone:"082-452-3991", email:"somchai@kaipuk.com"},
-		  {id:2, username:"sommhai", name:"somchai", lastname:"kulapalanont", phone:"082-452-3991", email:"somchai@kaipuk.com"},
-		  {id:3, username:"somsak", name:"somchai", lastname:"kulapalanont", phone:"082-452-3991,", email:"somchai@kaipuk.com"},
-		  {id:4, username:"somsong", name:"somchai", lastname:"kulapalanont", phone:"082-452-3991", email:"somchai@kaipuk.com"}
-	]
+	$scope.users = User.query();
 }
 
-function BillItemCtrl($scope, $routeParams)
+function BillItemCtrl($scope, $routeParams, $location)
 {
 	$scope.id = $routeParams.id
 	$scope.fields = [
@@ -194,4 +153,68 @@ function BillItemCtrl($scope, $routeParams)
 		{number:4, name:"PomadeD", count:1, price:200}
 	];
 
+	$scope.deleteBill = function()
+	{
+		var password = prompt('To cancle please retype a password');
+		if(password == "1234")
+			$location.path('/bill');
+
+	}
+}
+
+function UserCreateCtrl($scope, $location)
+{
+	$scope.submitText = "Create";
+	$scope.update = function()
+	{
+		$location.path("/user")
+	}
+}
+
+function UserUpdateCtrl($scope, $location, $routeParams, User)
+{
+	$scope.submitText = "Update";
+	$scope.user = User.get();
+	$scope.user.password = "";
+	$scope.update = function()
+	{
+		$location.path("/user")
+	}
+}
+
+function PromotionCtrl($scope, Promotion)
+{
+	$scope.promotions = Promotion.query();
+}
+
+function PromotionItemCtrl($scope, $location, Promotion, Product)
+{
+	$scope.promotion = Promotion.get();
+	$scope.condition_types = Promotion.getConditionTypes();
+	$scope.reward_types = Promotion.getRewardTypes();
+	$scope.submitText = "Update";
+	$scope.item_alls = Product.getListItems();
+	$scope.update = function()
+	{
+		$location.path('/promotion');
+	}
+}
+
+function PromotionCreateCtrl($scope, $location, Promotion, Product)
+{
+	$scope.promotion = {};
+	$scope.condition_types = Promotion.getConditionTypes();
+	$scope.reward_types = Promotion.getRewardTypes();
+	$scope.submitText = "Update";
+	$scope.item_alls = Product.getListItems();
+	$scope.update = function()
+	{
+		$location.path('/promotion');
+	}
+}
+
+function WholesaleCtrl($scope, Product)
+{
+	$scope.products = Product.getAll();
+	$scope.selectedProducts = [];
 }
