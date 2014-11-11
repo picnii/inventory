@@ -3,6 +3,16 @@
 
 module.exports = function(config) {
   config.set({
+    preprocessors: {
+             'component/**/*.html': ['ng-html2js'],
+             'component/*.html': ['ng-html2js']
+    },
+ 
+     ngHtml2JsPreprocessor: {
+         // setting this option will create only a single module that contains templates
+         // from all the files, so you can load them all with module('foo')
+         moduleName: 'templates'
+     },
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
@@ -15,6 +25,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'lib/jquery-1.11.1.min.js',
       'lib/angular/angular.min.js',
       'lib/angular/angular-route.min.js',
       'lib/angular/angular-mocks.js',
@@ -25,7 +36,9 @@ module.exports = function(config) {
       'component/component.js',
       'js/*.js',
       'js/**/*.js',
-      'test/**/*Spec.js'
+      'test/**/*Spec.js',
+      'component/**/*.html',
+      'component/*.html'
     ],
 
 
@@ -33,14 +46,6 @@ module.exports = function(config) {
     exclude: [
       
     ],
-
-
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-    
-    },
-
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
@@ -67,7 +72,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Firefox', 'Safari'],
+    browsers: ['Chrome','Firefox','Safari'],
 
 
     // Continuous Integration mode

@@ -3,7 +3,7 @@ describe('Unit: Bill Factory', function() {
   beforeEach(module('ngRoute'));
   beforeEach(module('pos'));
    
-   var Bill, Product;
+   var Bill, Product, Payment;
 
   // inject the $controller and $rootScope services
   // in the beforeEach block
@@ -12,6 +12,7 @@ describe('Unit: Bill Factory', function() {
     
     Bill = $injector.get('Bill');
     Product = $injector.get('Product');
+    Payment = $injector.get('Payment');
   }));
 
   it('query() should return array of bills', function(){
@@ -60,40 +61,48 @@ describe('Unit: Bill Factory', function() {
     expect(get_bill).toEqual(last_obj); 
   });
 
-  it('findAllpaidBill() should be able to find all paid\'s bill without any arg', function(){
-     var paid_bills =  Bill.findAllpaidBill();
+  it('findAllPaidBill() should be able to find all paid\'s bill without any arg', function(){
+     var paid_bills =  Bill.findAllPaidBill();
      expect(_.isArray(paid_bills)).toBe(true);
-  })
-  describe("paid()", function(){
+  });
+
+  describe("paid()/refund()", function(){
       var bill_saved, products, create_bill, result, all_products_before;
+      var payment_expect_amount, paid_bills, paid_bill;
+      var paid_amount;
       beforeEach(function(){
         all_products_before = Product.query();
         all_products_before = _.cloneDeep(all_products_before);
-        expect(Bill.findAllpaidBill().length).toBe(0);
+        expect(Bill.findAllPaidBill().length).toBe(0);
         create_bill = Bill.create();
         products = [
-          {id:"1", amount:2, price:20},
-          {id:"2", amount:4, price:30}
+          {id:all_products_before[0].id, count:2, price:all_products_before[0].price},
+          {id:all_products_before[1].id, count:4, price:all_products_before[1].price}
         ]
+        payment_expect_amount = products[0].count * products[0].price + products[1].count * products[1].price;
         bill_saved = Bill.get(create_bill.id);
         Bill.save({id:create_bill.id, products:products});
-        result = Bill.paid(create_bill.id);
+        paid_amount = Math.ceil(payment_expect_amount * (1 + (Payment.get().tax * 0.01)));
+        result = Bill.paid(create_bill.id, paid_amount);
+        paid_bills = Bill.findAllPaidBill();
+        paid_bill = paid_bills[paid_bills.length - 1];
       })
-      it('should return true if correct and return false if non of id exist', function(){
-        expect(result).toBe(true);
-        var fake_result = Bill.paid(-1);
-        expect(fake_result).toBe(false)
+      it('should return Paid\'s Bill ID if correct and return -1 if non of id exist or paid amount is lower than it sould', function(){
+        expect(result).toBe("1");
+        var fake_result = Bill.paid(-1, paid_amount);
+        expect(fake_result).toBe(-1)
       })
 
      it('paid() should transfer bill to paid\'s Bill by id',function(){
       var paid_time = new Date();
-      var paid_bills = Bill.findAllpaidBill();
       expect(Bill.query()).toEqual([]);
       /*expect(paid_bills).toEqual([{
         id:'1',
         create_time:paid_time,
         total:160,
-        bill:bill_saved
+        bill:bill_saved,
+        amount:paid_amout,
+        payment_id:0
       }]);*///pass but browser bug array cant equal array
 
     });
@@ -104,9 +113,40 @@ describe('Unit: Bill Factory', function() {
         {
           var real_product = Product.get({id:products[i].id});
           var before_product = _.find(all_products_before, {id:products[i].id});
-          expect(real_product.count).toEqual(before_product.count - products[i].amount);
+          expect(real_product.count).toEqual(before_product.count - products[i].count);
         }
     })
+
+    it('should be able to get payment amount with tax include', function(){
+      var tax = Payment.get().tax;
+      
+      expect(paid_bill.total).toEqual(payment_expect_amount + (payment_expect_amount * tax / 100));
+    });
+
+    it('should be able to pay with credit card and change amount to be the correct one', function(){
+      
+      var credit_bill = Bill.create();
+      var credit = Payment.get().credits[0];
+      var credit_charge_amount = payment_expect_amount * credit.chargePercent / 100 + credit.chargeAmount;
+      var paid_amount = payment_expect_amount + credit_charge_amount;
+      paid_amount = paid_amount * (1 + Payment.get().tax * 0.01);
+      Bill.save({id:credit_bill.id, products:products });
+      Bill.paid(credit_bill.id, paid_amount, credit);
+      var paid_bills = Bill.findAllPaidBill();
+      var credit_bill = paid_bills[paid_bills.length - 1];
+
+      expect(credit_bill.total).toEqual(paid_amount);
+    })
+
+    it('should beable to refund() with the bill that already paid', function(){
+      
+    })
+
+    it('should return -1 if paid is wrong', function(){
+
+    })
+
+
   });//end paid()
  
 

@@ -1,3 +1,30 @@
+section.show-print
+{
+	display:none; 
+}
+
+.hide-print
+{
+	display: block;
+}
+
+@media print {
+	.has-navbar-top .app-body
+	{
+		padding-top: 0px;
+	}
+	.hide-print
+	{
+		display: none;
+	}
+
+	section.show-print
+	{
+		display: block;
+	}
+
+}
+
 .bill-wrap
 {
 	padding-right: 150px;
@@ -99,20 +126,20 @@ nav.scan .scan-check
 	cursor:hand;
 }
 
-nav.scan .barcode 
+nav.scan .barcode, nav .cash
 {
 	
 	background-color: rgb(245, 105, 105);
 	padding:30px;
 }
 
-nav.scan .touch 
+nav.scan .touch, nav .credit
 {
     background-color: rgb(226, 241, 148);
 	padding: 30px;
 }
 
-nav.scan .barcode-input
+nav.scan .barcode-input, nav.scan .cash-input
 {
 	
 	background-color: rgb(245, 105, 105);
@@ -154,7 +181,7 @@ nav.scan .barcode-input
 	padding:30px;
 }
 
-.touch-input
+.touch-input, .credit-input
 {
 	background-color: rgb(226, 241, 148);
 	padding: 10px;

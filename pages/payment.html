@@ -1,15 +1,20 @@
-<section class="payment page">
-	<div class="order-wraper">
-		<paymentsum tax="Payment.tax" discount="discount" orders="orders" total="total"></paymentsum>
-		<paymentnav credits="Payment.credits" total="total" on-paid="print"></paymentnav>
-	</div>
+<section class="hide-print">
+  <section class="payment page">
+  	<div class="order-wraper">
+  		<paymentsum tax="Payment.tax" discount="discount" orders="orders" total="total"></paymentsum>
+  		<paymentnav credits="Payment.credits" total="total" on-paid="print"></paymentnav>
+  	</div>
 
 
-</section>
-<div class="navbar navbar-app navbar-absolute-bottom">
-    <div class="btn-group justified">
-      <a href="#/order" class="btn btn-navbar btn-icon-only">Back</a>
-      <a href="#/" class="btn btn-navbar btn-icon-only">CONFIRM</a>
-      <a href="" ng-click="print()" class="btn btn-navbar btn-icon-only">PRINT</a>
-    </div>
+  </section>
+  <div class="navbar navbar-app navbar-absolute-bottom">
+      <div class="btn-group justified">
+        <a href="#/order" class="btn btn-navbar btn-icon-only">Back</a>
+        <!--<a href="#/" class="btn btn-navbar btn-icon-only">CONFIRM</a>
+        <a href="" ng-click="print()" class="btn btn-navbar btn-icon-only">PRINT</a>-->
+      </div>
   </div>
+</section>
+<section class="show-print">
+  <receipt paid-bill="paid_bill"></receipt>
+</section>

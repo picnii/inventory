@@ -1,4 +1,4 @@
-angular.module("component", [])
+angular.module("component", ['localData'])
 .directive("groupbill", function () {
 	return {
 		restrict: "E",
@@ -12,8 +12,8 @@ angular.module("component", [])
 		},
 		link: function (scope, element, attrs)
 		{
-			console.log(attrs);
-			console.log(scope)
+			//console.log(attrs);
+			//console.log(scope)
 			scope.updateSelected = function(){
 				if(typeof(attrs.selected) == 'undefined' || attrs.selected == 'false' )
 					scope.isSelected = false;
@@ -26,9 +26,9 @@ angular.module("component", [])
 
 			scope.do_callback_event = function()
 			{
-				console.log('callback');
-				console.log(scope.isSelected)
-				console.log(scope.callback_select)
+			//	console.log('callback');
+			//	console.log(scope.isSelected)
+			//	console.log(scope.callback_select)
 				if(scope.isSelected && _.isFunction(scope.callback_select))
 					scope.callback_select();
 				if(!scope.isSelected && _.isFunction(scope.callback_un_select))
@@ -37,10 +37,11 @@ angular.module("component", [])
 
 			scope.doUpdate = function()
 			{
-				console.log('testupdate');
+				//console.log('testupdate');
 				var element_target = angular.element(document.querySelector('div.bill.selectdiv.clickable.selectdiv.clickable.active'));
 				if(element_target.length > 0)
 				{
+				//	console.log('unselect em------')
 					var target_scope = element_target.scope() ;
 					target_scope.item.isSelected = false;
 					//target_scope.doUpdate();
@@ -88,10 +89,9 @@ angular.module("component", [])
 				{
 					scope.cssBarcode = '';
 					scope.cssTouch = "hide";
-					setInterval(function(){
-
-						document.getElementById('barcode-input').focus();
-					}, 10)
+					var inputElement = element.find('input')
+					inputElement[0].focus()
+					
 					
 				}else if(scope.mode == MODE_TOUCH)
 				{
@@ -195,7 +195,7 @@ angular.module("component", [])
 		}
 
 	}
-}).directive("paymentnav", function () {
+}).directive("paymentnav", function (Product) {
 	return {
 		restrict: "E",
 		templateUrl: "component/payment/paymentnav.html",
@@ -219,10 +219,8 @@ angular.module("component", [])
 				{
 					scope.cssBarcode = '';
 					scope.cssTouch = "hide";
-					setInterval(function(){
-
-						document.getElementById('barcode-input').focus();
-					}, 10)
+					var inputElement = element.find('input')
+					inputElement[0].focus()
 					
 				}else if(scope.mode == MODE_TOUCH)
 				{
@@ -245,38 +243,34 @@ angular.module("component", [])
 
 			scope.doPayCash = function()
 			{
+				
 				scope.isPaid = true;
 				scope.payAmount = scope.input;
 				scope.input = "";
-				scope.doPayment();
-			}
-
-			scope.doPayment = function()
-			{
-				scope.payment_callback();
+				
+				scope.payment_callback(scope.total, null);
 			}
 			scope.isCreditSelected = false;
 
 			scope.selectCredit = function(credit)
 			{
-				console.log('select credit');
-				console.log(credit)
+				
 				scope.isCreditSelected = true;
 				scope.creditExplanation = "Charge " + credit.chargePercent + " % + " + credit.chargeAmount;
-				scope.total_credit_payment = scope.total + (scope.total * credit.chargePercent / 100) + credit.chargeAmount;
+				scope.total_credit_payment = Math.ceil(scope.total + (scope.total * credit.chargePercent / 100) + credit.chargeAmount);
 
 			}
 
 			scope.payWithCredit = function(credit)
 			{
-
+				scope.payment_callback(scope.total_credit_payment, credit);
 			}
 
 			scope.switchTo(scope.mode);
 
 		}
 	}
-}).directive("paymentsum", function () {
+}).directive("paymentsum", function (Payment) {
 	return {
 		restrict: "E",
 		templateUrl: "component/payment/paymentsum.html",
@@ -298,12 +292,16 @@ angular.module("component", [])
 			scope.taxAmount = 0;
 			scope.calSubtotal = function()
 			{
-				for(var i =0; i < scope.orders.length; i++)
+				/*for(var i =0; i < scope.orders.length; i++)
 				{
 					scope.subTotalAmount += scope.orders[i].count * scope.orders[i].price;
 				}
-				scope.taxAmount = scope.subTotalAmount / 100 * scope.tax;
-				scope.total = scope.subTotalAmount - scope.discount + scope.taxAmount
+				scope.taxAmount = Math.ceil((scope.subTotalAmount ) / 100 * scope.tax);
+				scope.total = Math.ceil(scope.subTotalAmount - scope.discount + scope.taxAmount)*/
+				var total_object = Payment.getTotal(scope.orders, scope.discount);
+				scope.subTotalAmount = total_object.actual_subtotal;
+				scope.taxAmount = total_object.actual_tax_amount;
+				scope.total = total_object.total;
 			}
 
 			scope.calSubtotal();
@@ -493,8 +491,8 @@ angular.module("component", [])
 
 			scope.removeProduct = function(product)
 			{
-				console.log('attempt to remove')
-				console.log(scope.selectedProducts)
+				//console.log('attempt to remove')
+				//console.log(scope.selectedProducts)
 				_.remove(scope.selectedProducts, {id:product.item_id})
 			}
 
@@ -503,5 +501,30 @@ angular.module("component", [])
 				scope.selectedProducts.push({});
 			}
 		}
+	}
+}).directive("receipt", function () {
+	return {
+		restrict: "E",
+		templateUrl: "component/bill/receipt.html",
+		replace: true,
+		scope: {
+			paidBill:"="
+		},
+		link: function (scope, element, attrs)
+		{
+			scope.calculate = function()
+			{
+
+				scope.subTotalAmount = 0;
+				for(var i =0; i < scope.paidBill.bill.products.length; i++)
+					scope.subTotalAmount += scope.paidBill.bill.products[i].count * scope.paidBill.bill.products[i].price;
+				scope.total = scope.subTotalAmount - scope.paidBill.discount + scope.paidBill.taxAmount;
+			}
+			scope.calculate();
+			scope.$watch('paidBill', function(newValue){
+				scope.calculate();
+			})
+		}
+
 	}
 });

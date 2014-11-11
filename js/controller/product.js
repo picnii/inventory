@@ -8,7 +8,7 @@ function ProductCtrl($scope, Product)
 		{name:"Stock", type:"number", slug:'count'}
 	]
 
-	$scope.products = Product.getAll();
+	$scope.products = Product.query();
 	
 
 }

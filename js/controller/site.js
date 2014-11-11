@@ -39,28 +39,65 @@ function OrderCtrl($scope, $location, $routeParams, Bill, Product)
 
 	$scope.addItem = function(item)
 	{
+		/*console.log("add Item ");
+		console.log(Product.query());
+		console.log($scope.orders)
+		console.log(item.number)*/
 		var index = _.findIndex($scope.orders, {number:item.number})
+		var _item = _.cloneDeep(item);
 		if(index == -1 )
 		{
 			item.number = $scope.orders.length + 1;
-			item.count = $scope.amount;
-			$scope.orders.push(item);
+			_item.number = item.number;
+			_item.count = $scope.amount;
+			$scope.orders.push(_item);
 		}else
 			$scope.orders[index].count += $scope.amount;
-
+		$scope.bill.products = $scope.orders;
+		if(Bill.save($scope.bill))
+		{
+			/*console.log('saved')
+			console.log($scope.bill)
+			console.log($scope.products)
+			console.log( Bill.get($routeParams.id));
+			console.log(Product.query());*/
+		}
 	}
 
 }
 
-function PaymentCtrl($scope, $location, $routeParams, Bill, Payment)
+function PaymentCtrl($scope, $location, $routeParams, Bill, Payment, $timeout, Product)
 {
 	$scope.bill = Bill.get($routeParams.id);
 	$scope.orders = $scope.bill.products;
 	$scope.Payment = Payment.get();
 	$scope.discount = 0;
-
-	$scope.print =function(){
-		alert("จำลองว่า print")
+	$scope.paid_bill = {bill:{products:[]}};
+	/*console.log('Start Payment')
+	console.log(Product.query())
+	console.log($scope.bill)*/
+	
+	$scope.print =function(amount, credit){
+		
+		if(_.isObject(credit) && credit!= null)
+		{
+			//console.log('with credit')
+			Bill.paid($scope.bill.id, amount, credit)
+		}else
+		{
+			//console.log('without credit')
+			Bill.paid($scope.bill.id, amount)
+		}
+		
+		var paid_bills = Bill.findAllPaidBill();
+		//console.log(paid_bills)
+		$scope.paid_bill = paid_bills[paid_bills.length - 1];
+		$timeout(function(){
+			window.print();
+			$location.path('/')
+		}, 10)
+		
+		//alert("จำลองว่า print")
 	}
 }
 
@@ -86,20 +123,15 @@ function ReportCtrl($scope)
 
 
 
-function BillCtrl($scope)
+function BillCtrl($scope, Bill)
 {
 	$scope.fields = [
 		{name:"Id", type:"text", slug:'id'},
-		{name:"Time", type:"text", slug:'time'},
+		{name:"Time", type:"text", slug:'create_time'},
 		{name:"Amount", type:"number", slug:'amount'}
 	];
 
-	$scope.bills = [
-		{id:"1", time:"2014-12-20 12:12:12", amount:4000},
-		{id:"2", time:"2014-12-20 12:12:12", amount:4500},
-		{id:"3", time:"2014-12-20 12:12:12", amount:6000},
-		{id:"4", time:"2014-12-20 12:12:12", amount:7000}
-	]
+	$scope.bills = Bill.findAllPaidBill();
 
 
 }

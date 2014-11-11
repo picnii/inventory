@@ -23,7 +23,7 @@ describe('Unit: Product Factory', function() {
     var first_item_count = first_item.count;
     var second_item_count = second_item.count;
     var first_item_used = 2, second_item_used = 3
-    var sellAmount = Product.sold([{id:first_item.id, amount:first_item_used}, {id:second_item.id, amount:second_item_used}]);
+    var sellAmount = Product.sold([{id:first_item.id, count:first_item_used}, {id:second_item.id, count:second_item_used}]);
     expect(sellAmount).toEqual((first_item_used * first_item.price) + (second_item_used * second_item.price));
     first_item = Product.get({id:first_item.id});
     second_item = Product.get({id:second_item.id});

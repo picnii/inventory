@@ -6,25 +6,25 @@
 				<th>Price</th>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in orders">
+				<tr ng-repeat="item in orders" class="order-item">
 					<td>{{item.number}}</td>
 					<td>{{item.name}}</td>
 					<td>{{item.count}}</td>
 					<td>{{item.price}}</td>
 				</tr>
-				<tr>
+				<tr class="subtotal">
 					<td colspan="3">Sub total</td>
 					<td>{{subTotalAmount}}</td>
 				</tr>
-				<tr>
+				<tr class="discount">
 					<td colspan="3">Discount</td>
 					<td>{{discount}}</td>
 				</tr>
-				<tr>
-					<td colspan="3">Tax {{tax}}%</td>
-					<td>{{taxAmount}}</td>
+				<tr class="tax">
+					<td colspan="3" class="percent">Tax {{tax}}%</td>
+					<td class="amount">{{taxAmount}}</td>
 				</tr>
-				<tr>
+				<tr class="total">
 					<td colspan="3">Total Due</td>
 					<td>{{total}}</td>
 				</tr>

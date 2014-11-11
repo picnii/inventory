@@ -10,6 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="lib/mobileangularjs/css/mobile-angular-ui-base.min.css">
 	<link rel="stylesheet" type="text/css" href="lib/mobileangularjs/css/mobile-angular-ui-desktop.min.css">
 	<link rel="stylesheet" type="text/css" href="lib/mobileangularjs/css/mobile-angular-ui-hover.min.css">	
+	<script type="text/javascript" src="js/factory.js"></script>
 	<script type="text/javascript" src="widget/widget.js"></script>
 	<script type="text/javascript" src="component/component.js"></script>
 	<!-- App-->
@@ -20,7 +21,7 @@
 </head>
 <body ng-app="pos">
 	
-<div class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="mainSidebar">
+<div class="sidebar sidebar-left hide-print" toggleable parent-active-class="sidebar-left-in" id="mainSidebar">
   <h1 class="app-name">POS</h1>
 
   <div class="scrollable">
@@ -43,9 +44,9 @@
 	<div class="app">
 
 	  <!-- Navbars -->
-	  <div class="navbar navbar-app navbar-absolute-top">
+	  <div class="navbar navbar-app navbar-absolute-top hide-print">
 
-	      <div class="navbar-brand navbar-brand-center" yield-to="title">
+	      <div class="navbar-brand navbar-brand-center hide-print" yield-to="title">
 	        <span>My App</span>
 	      </div>
 

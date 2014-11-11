@@ -1,14 +1,14 @@
 <nav class="scan">
 	<header>
-		<div class="barcode scan-check" ng-click="switchTo('barcode');">
+		<div class="cash scan-check" ng-click="switchTo('barcode');">
 			<span>CASH</span>
 		</div>
-		<div class="touch scan-check" ng-click="switchTo('touch');">
+		<div class="credit scan-check" ng-click="switchTo('touch');">
 			<span>CREDIT</span>
 		</div>
 	</header>
 	<section>
-		<div class="barcode-input {{cssBarcode}}">
+		<div class="cash-input {{cssBarcode}}">
 			<form ng-submit="doPayCash()">
 				<input id="barcode-input" ng-model="input" type="text" class="form-control" placeholder="ใส่จำนวนเงิน">
 			</form>
@@ -18,15 +18,15 @@
 				<span style="font-size:40px;font-weight:bold;color:#face00;">ทอน {{payAmount - total}}</span><br/>
 			</div>
 		</div>
-		<div class="touch-input {{cssTouch}}">
+		<div class="credit-input {{cssTouch}}">
 			<section class="group-category">
 				<div class="item" ng-repeat="credit in credits">
 					<span ng-click="selectCredit(credit)">{{credit.name}}</span>
 					&nbsp;
 				</div>
-				<div ng-show="isCreditSelected">
+				<div class="detail" ng-show="isCreditSelected">
 					{{creditExplanation}}<br/>
-					<span style="font-size:40px;font-weight:bold;color:#face00;">ยอดชำระ {{total_credit_payment}}</span><br/>
+					<span class="credit-total" style="font-size:40px;font-weight:bold;color:#face00;">ยอดชำระ {{total_credit_payment}}</span><br/>
 					<button class="btn btn-lg btn-primary">PAY</button>
 				</div>
 				
