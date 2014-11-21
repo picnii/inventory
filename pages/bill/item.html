@@ -1,0 +1,19 @@
+<section class="hide-print">
+<h1>BILL #{{id}} {{paid_bill.create_time | date:'medium'}}</h1>
+
+<paymentsum tax="Payment.tax" discount="discount" orders="orders" total="total"></paymentsum>
+
+
+ <div class="navbar navbar-app navbar-absolute-bottom">
+    <div class="btn-group justified">
+      <a href="#/bill" class="btn btn-navbar btn-icon-only">Back</a>
+      <a href="" ng-click="deleteBill()" class="btn btn-navbar btn-icon-only">Delete</a>
+        <a href="" ng-click="print()" class="btn btn-navbar btn-icon-only">PRINT</a>
+    </div>
+  </div>
+
+</section>
+
+<section class="show-print">
+  <receipt paid-bill="paid_bill"></receipt>
+</section>
