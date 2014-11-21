@@ -2,14 +2,16 @@ describe('Payment Nav Directive', function() {
 	beforeEach(module("component"));
 	beforeEach(module('templates'));
 	beforeEach(module('pos'));
-  	var Product, Payment;
-	var $compile, $scope, html, elm, template, templateAsHtml, credit_total;
+  	var Product, Payment, Store;
+	var $compile, $scope, $filter, html, elm, template, templateAsHtml, credit_total;
 	beforeEach(inject(function($injector) {
     // Create a new scope that's a child of the $rootScope
 	    var $rootScope = $injector.get('$rootScope');
 	   	$compile = $injector.get('$compile');
 	   	Product = $injector.get('Product');
 	   	Payment = $injector.get('Payment');
+	   	Store = $injector.get('Store');
+	   	$filter = $injector.get('$filter')
 	    $scope = $rootScope.$new();
 	    // Create the controller
 	    $scope.Payment = Payment.get();
@@ -81,7 +83,7 @@ describe('Payment Nav Directive', function() {
 			    credit_total = $scope.total + credit_charge
 			    credit_total = Math.ceil(credit_total)
 
-				expect(elm.find('span.credit-total').text()).toContain(credit_total)
+				expect(elm.find('span.credit-total').text()).toContain($filter('currency')(credit_total, Store.currency) )
 			})
 
 		})

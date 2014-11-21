@@ -1,3 +1,4 @@
+
 <nav class="scan">
 		<header>
 			<div class="barcode scan-check" ng-click="switchTo('barcode');">
@@ -25,7 +26,7 @@
 			<section class="group-item {{cssItem}}">
 				<div class="item" ng-repeat="item in selectedGroup.items" ng-click="addItem(item)">
 
-					<span>{{item.name}}</span>
+					<span>{{shortName(item.name)}}</span>
 					&nbsp;
 				</div>
 			</section>

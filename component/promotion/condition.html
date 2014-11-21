@@ -13,12 +13,13 @@
 	 		<!-- Each Item -->
 	 		When buy 
 	 		<input type="hidden" ng-model="item.item_id">
-	 		 <select ng-model="item.item" ng-options="iteml.name for iteml in itemAlls" ng-change="updateItem(item)">
+	 		 <select ng-model="item.product" ng-options="iteml.name for iteml in itemAlls" ng-change="updateItem(item)">
 	 		 	</select> X 
 	 		 <input type="number" ng-model="item.amount" placeholder="Amount"> 
+	 		 <button class="btn btn-lg btn-danger" ng-click="condition.removeItem(item.id)">X</button>
 
 	 	</div>
-	 	<button class="btn btn-lg btn-info" ng-click="addItem(condition.items)">+ Item</button>
+	 	<button class="btn btn-lg btn-info" ng-click="condition.addItem()">+ Item</button>
 	 </div>
 	 <div ng-if="condition.type == CON_TYPE_MONEY">
 	 	When buy >= 

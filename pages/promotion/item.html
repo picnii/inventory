@@ -1,18 +1,24 @@
-<form ng-submit="">
-	<input type="text" ng-model="promotion.name" placeholder="Name"><br/>
-	<input type="text" ng-model="promotion.detail" placeholder="Detail"><br/>
-	<input type="date" ng-model="promotion.start" placeholder="Start"><br/>
-	<input type="date" ng-model="promotion.end" placeholder="end"><br/>
-	<h4>Condition</h4>
-	<promo-condition conditions="promotion.conditions" condition-types="condition_types" item-alls="item_alls"></promo-condition>
-	<h4>Reward</h4>
-	<promo-reward reward-types="reward_types" reward="promotion.reward" item-alls="item_alls"></promo-reward>
-		<input type="submit" value="{{submitText}}" class="btn btn-lg btn-danger" ng-click="update()">
-</form>
+<div class="scrollable">
+	<div class="scrollable-content">
+		<form ng-submit="">
+			<input type="text" ng-model="promotion.name" placeholder="Name"><br/>
+			<input type="text" ng-model="promotion.detail" placeholder="Detail"><br/>
+			<input type="date" ng-model="promotion.start" placeholder="Start"><br/>
+			<input type="date" ng-model="promotion.end" placeholder="end"><br/>
+			<h4>Condition</h4>
+			<promo-condition conditions="promotion.conditions" condition-types="condition_types" item-alls="item_alls"></promo-condition>
+			<h4>Reward</h4>
+			<promo-reward reward-types="reward_types" reward="promotion.reward" item-alls="item_alls"></promo-reward>
+				<input type="submit" value="{{submitText}}" class="btn btn-lg btn-danger" ng-click="update()">
+			<pre>{{promotion}}</pre>
+			<div style="height:200px"></div>
+		</form>
+	</div>
+</div>
  <div class="navbar navbar-app navbar-absolute-bottom">
     <div class="btn-group justified">
       <a href="#/promotion" class="btn btn-navbar btn-icon-only">Back</a>
-      <a href="#/promotion" class="btn btn-navbar btn-icon-only">Delete Promotion</a>
+      <a ng-show="show_delete" href="#/promotion" class="btn btn-navbar btn-icon-only">Delete Promotion</a>
     </div>
   </div>
 

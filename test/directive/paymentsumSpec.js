@@ -2,14 +2,16 @@ describe('Payment Sum Directive', function() {
 	beforeEach(module("component"));
 	beforeEach(module('templates'));
 	beforeEach(module('pos'));
-  	var Product, Payment;
-	var $compile, $scope, html, elm, template, templateAsHtml, subtotal, taxAmount, total;
+  	var Product, Payment, Store;
+	var $compile, $scope, $filter, html, elm, template, templateAsHtml, subtotal, taxAmount, total;
 	beforeEach(inject(function($injector) {
     // Create a new scope that's a child of the $rootScope
 	    var $rootScope = $injector.get('$rootScope');
 	   	$compile = $injector.get('$compile');
 	   	Product = $injector.get('Product');
-	   	Payment = $injector.get('Payment')
+	   	Payment = $injector.get('Payment');
+	   	Store = $injector.get('Store');
+	   	$filter = $injector.get('$filter')
 	    $scope = $rootScope.$new();
 	    $scope.Payment = Payment.get();
 	    $scope.discount = 250;
@@ -25,7 +27,7 @@ describe('Payment Sum Directive', function() {
 
 	    //tax calculation
 	    taxAmount = subtotal * $scope.Payment.tax * 0.01;
-	    taxAmount = Math.ceil(taxAmount)
+	    taxAmount = taxAmount
 	    total = subtotal - $scope.discount + taxAmount;
 
 
@@ -41,24 +43,25 @@ describe('Payment Sum Directive', function() {
 		
 		for(var i = 0; i < $scope.orders.length; i++)
 		{
+			var expect_price = $filter('currency')( $scope.orders[i].price, Store.currency);
 			expect(list_all_tr.eq(i).text() ).toContain($scope.orders[i].number);
 			expect(list_all_tr.eq(i).text() ).toContain($scope.orders[i].count);
-			expect(list_all_tr.eq(i).text() ).toContain($scope.orders[i].price);
+			expect(list_all_tr.eq(i).text() ).toContain(expect_price);
 			expect(list_all_tr.eq(i).text() ).toContain($scope.orders[i].number);
 		}
 	});
 
 	it('should display discount as scope.discount at tr.discount', function(){
-		expect(elm.find("tr.discount").text() ).toContain($scope.discount + "")
+		expect(elm.find("tr.discount").text() ).toContain($filter('currency')( $scope.discount, Store.currency))
 	})
 
 	it('should display subtotal due that is sum from order at tr.subtotal', function(){
-		expect(elm.find("tr.subtotal").text()).toContain(subtotal);
+		expect(elm.find("tr.subtotal").text()).toContain($filter('currency')( subtotal, Store.currency));
 	})
 
 	it('should display tax that is % at td.percent and amount at td.amount', function(){
 		expect(elm.find('tr.tax').find("td.percent").text()).toContain($scope.Payment.tax);
-		expect(elm.find('tr.tax').find("td.amount").text()).toContain(taxAmount)
+		expect(elm.find('tr.tax').find("td.amount").text()).toContain($filter('currency')( taxAmount, Store.currency))
 
 	})
 

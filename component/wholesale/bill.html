@@ -1,0 +1,159 @@
+<section>
+	
+
+
+<div class="container">
+	<div class="text-center">
+		<div class="row">
+		  	<div class="col-xs-4"> 
+			  	<div><b>{{Store.name}}</b></div>
+			  	<div>{{Store.address.name}}่</div>
+			  	<div ng-repeat="line in Store.adress.line">{{line}}</div>
+			  	<div ng-repeat="line in Store.phones">{{line.no}}</div>
+			  	<div>{{Store.email}}</div>
+			  	<div>{{Store.website}}</div>
+			</div>
+		  	<div class="col-xs-4"> <img ng-src = "{{Store.logo}}"></div>
+		  	<div class="col-xs-4">
+			  	<div><b>Invoice</b></div>
+			  	<div class="bgheader">Invoice No</div>
+			  	<div>{{bill.id}}</div>
+			  	<div class="bgheader">Date</div>
+			  	<div>{{bill.create_time}}</div>
+			  	<div class="bgheader">เลขประจำตัวผู้เสียภาษี</div>
+			  	<div>0105557129765</div>
+			  	<div>Terms: NET30</div>
+			  	<div>Due Date: 26 Oct 2014</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="boxline">
+	<div class="insideboxleft">Bill to :</div>
+	<div class="insideboxright">{{bill.customer.bill_to}}</div>
+</div>
+<div class="boxline">
+	<div class="insideboxleft">Ship to :</div>
+	<div class="insideboxright">{{bill.customer.ship_to}}</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-7"> 
+			<table class="table table-striped">
+				<tr class="">
+					<td>FOB</td>
+					<td>Ship Date</td>
+					<td>Ship Via</td>
+					<td>Tracking No.</td>
+				</tr>
+				<tr>
+					<td>{{bill.customer.fob}}</td>
+					<td>{{bill.customer.ship_date}}</td>
+					<td>{{bill.customer.ship_via}}</td>
+					<td>{{bill.customer.tracking_no}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>	
+</div>
+<table class="table table-bordered">
+	<tr class="bgheader">
+		<td>Code</td>
+		<td>Description</td>
+		<td>Quantity</td>
+		<td>Rate</td>
+		<td>Discount</td>
+		<td>Amount</td>
+	</tr>
+	<tr ng-repeat="item in bill.products">
+		<td>{{item.code}}</td>
+		<td>{{item.name}}</td>
+		<td>{{item.count}}</td>
+		<td>{{item.price | currency:Store.currency}}</td>
+		<td>0.00%</td>
+		<td>{{item.count * item.price | currency:Store.currency}}</td>
+	</tr>
+</table>
+<div style="height:50px;border-bottom:1px solid black"></div>
+
+<div class="container">
+	<div class="text-right">
+	<div class="col-xs-7"></div>
+
+	<div class="col-xs-3">
+		
+			<div>Subtotal</div>
+			<div>Shipping</div>
+			<div>Total</div>
+			<div>Paid</div>
+			<div><strong>Balance Due</strong></div>
+		
+	</div>
+	<div class="col-xs-2">
+
+		<div>{{payment_total.actual_subtotal | currency:Store.currency}}</div>
+		<div>{{0 | currency:Store.currency}}</div>
+		<div>{{payment_total.total | currency:Store.currency }}</div>
+		<div>{{payment_total.total | currency:Store.currency}}</div>
+		<div><strong>{{0 | currency:Store.currency}}</strong></div>
+	</div>
+	</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+	.boxline
+	{
+		display:inline-block;
+		border-color: #038B0F;
+		border-style: solid;
+		border-radius: 15px;
+    	padding: 3px;
+    	background: #038B0F;
+    	margin: 30px;
+	}
+	.boxline .insideboxleft
+	{
+		display:inline-block;
+		width:100px;
+		height: 70px;
+		background-color: #038B0F;
+		color: white;
+		
+
+	}
+	.boxline .insideboxright
+	{
+		display:inline-block;
+		width:100px;
+		height: 70px;
+		background-color: white;
+		border-top-right-radius: 15px;
+		border-bottom-right-radius: 15px;
+	}
+	.bgheader
+	{
+		background-color: #038B0F;
+		color: white;
+	}
+	.table-striped>tbody>tr:nth-child(odd)>td, .table-striped>tbody>tr:nth-child(odd)>th
+	{
+		background-color: #038B0F;
+		color: white;
+	}
+</style>
+</section>

@@ -30,6 +30,10 @@ var app = angular.module('pos', [
         // ...
          templateUrl: 'pages/bill.html',
          controller: 'BillCtrl'
+      }).when('/bill/wholesale', {
+        // ...
+         templateUrl: 'pages/bill/wholesale.html',
+         controller: 'BillWholesaleCtrl'
       }).when('/bill/:id', {
         // ...
          templateUrl: 'pages/bill/item.html',
@@ -62,6 +66,10 @@ var app = angular.module('pos', [
         // ...
          templateUrl: 'pages/wholesale.html',
          controller: 'WholesaleCtrl'
+      }).when('/wholesale/bill/:id', {
+        // ...
+         templateUrl: 'pages/wholesale/bill.html',
+         controller: 'WholesaleBillCtrl'
       });
       // ...
   });

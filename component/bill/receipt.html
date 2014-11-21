@@ -1,27 +1,31 @@
 <section>
 	<h2>Receipt</h2>
 	<table class="table">
-		<tr ng-repeat="item in paidBill.bill.products">
+		<tr class="order-item" ng-repeat="item in paidBill.bill.products">
 			<td>{{item.number}}</td>
 			<td>{{item.name}}</td>
 			<td>{{item.count}}</td>
-			<td>{{item.price}}</td>
+			<td>{{item.price | currency:Store.currency}}</td>
 		</tr>
-		<tr>
+		<tr class="subtotal">
 			<td colspan="3">Sub total</td>
-			<td>{{subTotalAmount}}</td>
+			<td>{{subTotalAmount | currency:Store.currency}}</td>
 		</tr>
-		<tr>
+		<tr class="discount">
 			<td colspan="3">Discount</td>
-			<td>{{paidBill.discount}}</td>
+			<td>{{paidBill.discount | currency:Store.currency}}</td>
 		</tr>
-		<tr>
-			<td colspan="3">Tax {{tax}}%</td>
-			<td>{{paidBill.taxAmount}}</td>
+		<tr class="tax">
+			<td class="percent" colspan="3">Tax {{tax}}%</td>
+			<td class="amount">{{paidBill.tax_amount | currency:Store.currency}}</td>
 		</tr>
-		<tr>
+		<tr class="credit {{cssCredit}}">
+			<td class="percent">Credit charge</td>
+			<td>{{creditAmount | currency:Store.currency}}</td>
+		</tr>
+		<tr class="total">
 			<td colspan="3">Total Due</td>
-			<td>{{total}}</td>
+			<td>{{total | currency:Store.currency}}</td>
 		</tr>
 	</table>
 </section>

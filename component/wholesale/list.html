@@ -1,0 +1,49 @@
+<div class="">
+
+	<form ng-submit="order()">
+		<table class="table table-striped table-hover order">
+			<thead>
+				<th></th>
+				<th ng-click="clickSearchName()" class="clickable">
+					<span ng-hide="isSearchName">Name {{q.name}}</span>
+					<input ng-show="isSearchName" ng-model="q.name" placeholder="Name" class="name">
+				</th>
+				<th ng-click="clickSearchType()" class="clickable">
+					<span ng-hide="isSearchType">Type {{q.type}}</span>
+					<input ng-show="isSearchType" ng-model="q.type" placeholder="Type" class="type">
+				</th>
+				<th>12 - 35(ea)</th>
+				<th>36 - 59(ea)</th>
+				<th>60++(ea)</th>
+				<th>Stocks</th>
+				<th>Order</th>
+
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in products | filter:q" class="is-selected-{{item.isSelected}}">
+					<td  ng-click="doClickRow(item)"><input type="checkbox" ng-model="item.showSelected" style="width:20px;height:20px;"><input type="hidden" ng-model="item.isSelected"></input></td>
+					<td  ng-click="doClickRow(item)">{{item.name}}
+						<p class="condition" ng-show="item.hasCondition">{{getConditionText(item)}}</p>
+					</td>
+					<td  ng-click="doClickRow(item)">{{item.type}}</td>
+					<td  ng-click="doClickRow(item)">{{item.item_ranges[0].price | currency:Store.currency}}</td>
+					<td  ng-click="doClickRow(item)">{{item.item_ranges[1].price | currency:Store.currency}}</td>
+					<td  ng-click="doClickRow(item)">{{item.item_ranges[2].price | currency:Store.currency}}</td>
+					<td  ng-click="doClickRow(item)">{{item.count}}</td>
+					<td><input type="number" ng-model="item.amount" min="{{item.minumWholeSales}}" max="{{item.count}}" placeholder="MIN {{item.minumWholeSales}}" /></td>
+				</tr>
+			</tbody>
+		</table>
+		<input type="submit" value="Order" class="btn btn-lg btn-primary" style="width:100%;">
+	</form>
+	<style type="text/css">
+		.table-striped>tbody>tr.is-selected-true:nth-child(odd)>td,.table-striped>tbody>tr.is-selected-true:nth-child(even)>td
+		{
+			background-color: #face00;
+		}
+		p.condition
+		{
+			color: red;
+		}
+	</style>
+</div>

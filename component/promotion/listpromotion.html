@@ -11,7 +11,7 @@
 				<td>{{item.id}}</td>
 				<td>{{item.name}}</td>
 				<td>{{item.detail}}</td>
-				<td>{{item.time}}</td>
+				<td>{{item.start | date:'short'}} - {{item.end | date:'short'}}</td>
 				<td><a href="#/promotion/{{item.id}}" class="btn btn-lg btn-danger">View</a></td>
 			</tr>
 		</tbody>

@@ -12,7 +12,7 @@
 				<td>{{item.number}}</td>
 				<td>{{item.name}}</td>
 				<td>{{item.count}}</td>
-				<td>{{item.price}}</td>
+				<td>{{item.price | currency:Store.currency}}</td>
 				<td><button ng-click="removeItem(item);" class="btn btn-lg btn-danger">X</button></td>
 			</tr>
 		</tbody>

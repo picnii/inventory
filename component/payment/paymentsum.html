@@ -10,23 +10,23 @@
 					<td>{{item.number}}</td>
 					<td>{{item.name}}</td>
 					<td>{{item.count}}</td>
-					<td>{{item.price}}</td>
+					<td class="txt-right">{{item.price | currency:Store.currency}}</td>
 				</tr>
 				<tr class="subtotal">
 					<td colspan="3">Sub total</td>
-					<td>{{subTotalAmount}}</td>
+					<td class="txt-right">{{subTotalAmount | currency:Store.currency}}</td>
 				</tr>
 				<tr class="discount">
 					<td colspan="3">Discount</td>
-					<td>{{discount}}</td>
+					<td class="txt-right">{{discount | currency:Store.currency}}</td>
 				</tr>
 				<tr class="tax">
 					<td colspan="3" class="percent">Tax {{tax}}%</td>
-					<td class="amount">{{taxAmount}}</td>
+					<td class="amount txt-right">{{taxAmount | currency:Store.currency }}</td>
 				</tr>
 				<tr class="total">
 					<td colspan="3">Total Due</td>
-					<td>{{total}}</td>
+					<td class="txt-right">{{total | currency:Store.currency}}</td>
 				</tr>
 			</tbody>
 		</table>

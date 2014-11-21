@@ -8,6 +8,11 @@ section.show-print
 	display: block;
 }
 
+.txt-right
+{
+	text-align: right;
+}
+
 @media print {
 	.has-navbar-top .app-body
 	{
@@ -116,7 +121,15 @@ table thead
 	right:0px ;
 	width: 290px;
 	top: 10px;
+
 }
+nav.scan .group-item, nav.scan .group-category
+{
+	overflow: scroll;
+	overflow-x: hidden;
+	max-height: 400px;
+}
+
 
 nav.scan .scan-check
 {
@@ -166,7 +179,7 @@ nav.scan .barcode-input, nav.scan .cash-input
 }
 
 
-.discount
+/*.discount
 {
 	font-size: 30px;
 	margin-left: 10px;
@@ -179,7 +192,7 @@ nav.scan .barcode-input, nav.scan .cash-input
 	background-color: green;
 	color: white;
 	padding:30px;
-}
+}*/
 
 .touch-input, .credit-input
 {
@@ -192,7 +205,7 @@ nav.scan .barcode-input, nav.scan .cash-input
 	display: none;
 }
 
-.touch-input .item
+.touch-input .item, .credit-input .item
 {
 	display: inline-block;
 	padding-top: 20px;
@@ -206,7 +219,7 @@ nav.scan .barcode-input, nav.scan .cash-input
 	cursor: hand;
 }
 
-.touch-input .item span
+.touch-input .item span, .credit-input .item span 
 {
 	padding: 20px;
 	background-color: #face00;
@@ -229,4 +242,9 @@ nav.scan .barcode-input, nav.scan .cash-input
 .report.page
 {
 	text-align: center;;
+}
+
+.table>tbody>tr>td.txt-right
+{
+	padding-right: 20px;
 }

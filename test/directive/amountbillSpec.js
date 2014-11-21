@@ -47,4 +47,5 @@ describe('List Order Directive', function() {
 		expect(btns.eq(0).hasClass('inactive')).toBe(false);
 		expect(btns.eq(1).hasClass('inactive')).toBe(true);
 	});
+
 });

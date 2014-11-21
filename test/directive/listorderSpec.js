@@ -2,13 +2,15 @@ describe('List Order Directive', function() {
 	beforeEach(module("component"));
 	beforeEach(module('templates'));
 	beforeEach(module('pos'));
-  	var Product;
-	var $compile, $scope, html, elm, template, templateAsHtml;
+  	var Product, Store;
+	var $compile, $scope, $filter, html, elm, template, templateAsHtml;
 	beforeEach(inject(function($injector) {
     // Create a new scope that's a child of the $rootScope
 	    var $rootScope = $injector.get('$rootScope');
 	   	$compile = $injector.get('$compile');
 	   	Product = $injector.get('Product');
+	   	Store = $injector.get('Store');
+	   	$filter = $injector.get('$filter')
 	    $scope = $rootScope.$new();
 	    // Create the controller
 	    $scope.orders = Product.query();
@@ -31,9 +33,10 @@ describe('List Order Directive', function() {
 				//exclude column
 				var html = elm.find("tr").eq(i + 1).html();
 				expect(html).toContain($scope.orders[i].number);
-				expect(html).toContain($scope.orders[i].name);
+				var decoded = html.replace(/&amp;/g, '&');
+				expect(decoded).toContain($scope.orders[i].name);
 				expect(html).toContain($scope.orders[i].count);
-				expect(html).toContain($scope.orders[i].price);
+				expect(html).toContain($filter('currency')($scope.orders[i].price, Store.currency) );
 
 			}
 		});
@@ -52,9 +55,10 @@ describe('List Order Directive', function() {
 				var html = elm.find("tr").eq(i + 1).html();
 				expect($scope.orders[i].number).toBe(i + 1);
 				expect(html).toContain($scope.orders[i].number);
-				expect(html).toContain($scope.orders[i].name);
+				var decoded = html.replace(/&amp;/g, '&');
+				expect(decoded).toContain($scope.orders[i].name);
 				expect(html).toContain($scope.orders[i].count);
-				expect(html).toContain($scope.orders[i].price);
+				expect(html).toContain($filter('currency')($scope.orders[i].price, Store.currency) );
 
 			}
 		})

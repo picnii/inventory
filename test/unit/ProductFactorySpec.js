@@ -17,7 +17,7 @@ describe('Unit: Product Factory', function() {
     expect(get_item).toEqual(first_item);
   });
 
-  it('sold(products) should be able to cut stock in products', function(){
+  it('sold(products)/return(products) should be able to cut/return stock in products', function(){
     var first_item = Product.query()[0];
     var second_item = Product.query()[1];
     var first_item_count = first_item.count;
@@ -30,5 +30,14 @@ describe('Unit: Product Factory', function() {
     expect(first_item.count).toEqual(first_item_count - first_item_used);
     expect(second_item.count).toEqual(second_item_count - second_item_used);
 
+    var returnAmount = Product.returnProduct([{id:first_item.id, count:first_item_used}, {id:second_item.id, count:second_item_used}]);
+    expect(returnAmount).toEqual(sellAmount);
+    first_item = Product.get({id:first_item.id});
+    second_item = Product.get({id:second_item.id});  
+    expect(first_item.count).toEqual(first_item_count);
+    expect(second_item.count).toEqual(second_item_count);
+
   });
+
+
 })

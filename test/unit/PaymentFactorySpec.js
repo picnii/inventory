@@ -51,16 +51,16 @@ describe('Unit: Payment Factory', function() {
   });
 
   //need to check which one is right
-  /*it('should be able to calculate credit_amount from getCreditTotal(total, credit)', function(){
+  it('should be able to calculate credit_amount from getCreditTotal(total, credit)', function(){
     var total = 5000;
     var credit = Payment.get().credits[0];
     var credit_total = Payment.getCreditTotal(total, credit)
-    var credit_amount = total * credit.chargePercent + credit.chargeAmount;
+    var credit_amount = total * credit.chargePercent * 0.01 + credit.chargeAmount;
 
     expect(credit_total.credit).toEqual(credit);
-    expect(credit_total.creditAmount).toBe(credit_amount);
+    expect(credit_total.credit_amount).toBe(credit_amount);
+    expect(credit_total.total).toEqual(Math.ceil(credit_amount + total));
 
-
-  })*/
+  });
 
 });

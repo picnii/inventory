@@ -9,9 +9,9 @@
 		<tbody>
 			<tr ng-repeat="item in bills">
 				<td>{{item.id}}</td>
-				<td>{{item.create_time}}</td>
-				<td>{{item.amount}}</td>
-				<td><a href="#/bill/{{item.id}}" class="btn btn-lg btn-info">VIEW</a></td>
+				<td>{{item.create_time | date:'medium'}}</td>
+				<td>{{item.amount | currency:Store.currency}}</td>
+				<td><a href="#/{{target}}/{{item.id}}" class="btn btn-lg btn-info">VIEW</a></td>
 			</tr>
 		</tbody>
 	</table>

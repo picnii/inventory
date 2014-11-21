@@ -9,25 +9,25 @@
 	</header>
 	<section>
 		<div class="cash-input {{cssBarcode}}">
-			<form ng-submit="doPayCash()">
+			<form ng-hide="isPaid" ng-submit="doPayCash()">
 				<input id="barcode-input" ng-model="input" type="text" class="form-control" placeholder="ใส่จำนวนเงิน">
 			</form>
-			<span style="font-size:40px;font-weight:bold;color:#face00;">ราคา {{total}}</span><br/>
+			<span style="font-size:40px;font-weight:bold;color:#face00;">ราคา {{total | currency:Store.currency}}</span><br/>
 			<div ng-show="isPaid">
-				<span style="font-size:40px;font-weight:bold;color:#face00;">ชำระ {{payAmount}}</span><br/>
-				<span style="font-size:40px;font-weight:bold;color:#face00;">ทอน {{payAmount - total}}</span><br/>
+				<span style="font-size:40px;font-weight:bold;color:#face00;">ชำระ {{payAmount | currency:Store.currency}}</span><br/>
+				<span style="font-size:40px;font-weight:bold;color:#face00;">ทอน {{payAmount - total | currency:Store.currency}}</span><br/>
 			</div>
 		</div>
 		<div class="credit-input {{cssTouch}}">
-			<section class="group-category">
+			<section ng-hide="isPaid" class="group-category">
 				<div class="item" ng-repeat="credit in credits">
 					<span ng-click="selectCredit(credit)">{{credit.name}}</span>
 					&nbsp;
 				</div>
 				<div class="detail" ng-show="isCreditSelected">
 					{{creditExplanation}}<br/>
-					<span class="credit-total" style="font-size:40px;font-weight:bold;color:#face00;">ยอดชำระ {{total_credit_payment}}</span><br/>
-					<button class="btn btn-lg btn-primary">PAY</button>
+					<span class="credit-total" style="font-size:40px;font-weight:bold;color:#face00;">ยอดชำระ {{total_credit_payment | currency:Store.currency}}</span><br/>
+					<button ng-hide="isPaid" class="btn btn-lg btn-primary">PAY</button>
 				</div>
 				
 			</section>
