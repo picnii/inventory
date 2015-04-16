@@ -254,7 +254,7 @@ function PromotionCreateCtrl($scope, $location, Promotion, Product)
 	}
 }
 
-function LoadCtrl($scope, Branch, Bill, Store, Product, Promotion)
+function LoadCtrl($scope, Branch, Bill, Store, Product, Promotion, Payment)
 {
 	$scope.branch_id = ''
 	$scope.fields = [
@@ -271,8 +271,14 @@ function LoadCtrl($scope, Branch, Bill, Store, Product, Promotion)
 		Branch.get({id:$scope.branch_id}, function(branch){
 			//load Store
 			$scope.branch = branch
-			Store.init({name:branch.name, branch_id:branch_id, logo:branch.logo, manager_password:branch.manager_password, tax_percent:branch.tax_percent});
+			console.log('loaded store')
+			console.log(branch)
+			Payment.init(branch.payments)
+			console.log('test payment')
+			console.log(Payment.get())
+			Store.init({name:branch.name, branch_id:branch_id, logo:branch.logo, manager_password:branch.manager_password, tax_percent:branch.bill_info.tax_percent});
 			Product.init(branch.inventories)
+
 			Promotion.data.reset();
 			$scope.sale = Branch.getSale({id:$scope.branch_id}, function(){
 				//load old Bill?

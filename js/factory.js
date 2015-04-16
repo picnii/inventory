@@ -1,13 +1,17 @@
+var SERVER_PATH = "http://localhost/npop.in.th/zenpos/web/";
+
+
+
 angular.module('testData', ['ngResource']).
 factory('Test', function ($resource) {
-  return $resource('http://localhost/npop.in.th/zenpos/web/api/branches/:id/:action/:subaction', {}, {
+  return $resource(SERVER_PATH + 'api/branches/:id/:action/:subaction', {}, {
       getSale: {method:'GET', params:{'action':'sale'},  isArray:false},
       updateSale: {method:'POST', params:{'id':'@id',  'action':'sale', 'subaction':'update'},  isArray:false},
       
     });
 }).
 factory('TestLogin', function ($resource) {
-  return $resource('http://localhost/npop.in.th/zenpos/web/branch/info', {}, {
+  return $resource(SERVER_PATH + 'branch/info', {}, {
       login: {method:'GET',  isArray:false}
     });
 
@@ -15,7 +19,7 @@ factory('TestLogin', function ($resource) {
 
 angular.module('storeService', ['ngResource']).
 factory('Branch', function ($resource) {
-  return $resource('http://localhost/npop.in.th/zenpos/web/api/branches/:id/:action/:subaction', {}, {
+  return $resource(SERVER_PATH + 'api/branches/:id/:action/:subaction', {}, {
       login: {method:'GET',params:{'id':"info"},   isArray:false},
       getSale: {method:'GET', params:{'action':'sale'},  isArray:false},
       updateSale: {method:'POST', params:{'id':'@id',  'action':'sale', 'subaction':'update'},  isArray:false},
@@ -382,6 +386,20 @@ angular.module('localData', [])
     {id:"2", name:"VISA", chargePercent:0.8, chargeAmount:0.1}
   ]}
   return {
+    init:function(_payment)
+    {
+      console.log('sync stuff')
+      console.log(_payment)
+
+
+      payment = _payment;
+      for(var i =0;i < payment.credits.length;i++)
+      {
+        payment.credits[i].chargePercent = payment.credits[i].charge_percent;
+      payment.credits[i].chargeAmount = payment.credits[i].charge_amount;
+      }
+      
+    },
     get:function()
     {
       return payment;
