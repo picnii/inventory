@@ -4,6 +4,7 @@
 			<th>ID</th>
 			<th>Name</th>
 			<th>Count</th>
+			<th>Unit Price</th>
 			<th>Price</th>
 			<th></th>
 		</thead>
@@ -13,6 +14,7 @@
 				<td>{{item.name}}</td>
 				<td>{{item.count}}</td>
 				<td>{{item.price | currency:Store.currency}}</td>
+				<td>{{item.price * item.count | currency:Store.currency}}</td>
 				<td><button ng-click="removeItem(item);" class="btn btn-lg btn-danger">X</button></td>
 			</tr>
 		</tbody>

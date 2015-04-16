@@ -7,15 +7,21 @@
 	<button ng-click="isOrder=false" class="btn btn-lg">Back</button>
 	<h2>Customer Infomation</h2>
 	<label>Bill to</label>
-	<input type="text" ng-model="customer.bill_to" placeholder="Bill to"><br/>
+	<input class="form-control" type="text" ng-model="customer.bill_to" placeholder="Bill to"><br/>
+	
+	
+	<label >Ship date</label>
+	<input  class="form-control" type="date" ng-model="customer.ship_date">
+	<label >Ship via</label>
+	<input  class="form-control" type="text" ng-model="customer.ship_via">
 	<label>Ship to</label>
-	<textarea placeholder="Ship to" ng-model="customer.ship_to"></textarea><br/>
+	<textarea  class="form-control" placeholder="Ship to" ng-model="customer.ship_to"></textarea><br/>
+	<label>Ship cost(ค่าส่ง)</label>
+	<input  class="form-control" type="number" ng-model="customer.ship_cost">
 	<label>FOB</label>
-	<input type="text" placeholder="FOB" ng-model="customer.fob"><br/>
-	<label>Ship date</label>
-	<input type="date" ng-model="customer.ship_date">
-	<label>Tracking No.</label>
-	<input type="text" ng-model="customer.tracking_no">
+	<input  class="form-control" type="text" placeholder="FOB" ng-model="customer.fob"><br/>
+	<label >Tracking No.</label>
+	<input  class="form-control" type="text" ng-model="customer.tracking_no">
 	<h2>Order</h2>
 	<listorder orders="orders"></listorder>
 	<button class="btn btn-lg btn-primary" ng-click="confirm()">Confirm</button>

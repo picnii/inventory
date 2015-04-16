@@ -1,5 +1,6 @@
 function ProductCtrl($scope, Product)
 {
+	Product.data.load();
 	$scope.fields = [
 		{name:"ID", type:"number", slug:'id'},
 		{name:"Name", type:"text", slug:'name'},
@@ -9,16 +10,19 @@ function ProductCtrl($scope, Product)
 	]
 
 	$scope.products = Product.query();
-	
+	console.log("Product")
+	console.log($scope.products)
 
 }
 
 
-function WholesaleCtrl($scope, Wholesale, Product, $filter, $location)
+function WholesaleCtrl($scope, Wholesale, Product, $filter, $location, Store)
 {
 	//$scope.products = Product.query();
 	//$scope.selectedProducts = [];
-
+	if(prompt("Manager Password") != Store.get().manager_password)
+		$location.path('/');
+	Product.data.load();
 	$scope.items = Wholesale.query();
 	//$scope.items = $filter('filter')($scope.items, {hasCondition:false})
 	$scope.fields = [
@@ -44,8 +48,9 @@ function WholesaleCtrl($scope, Wholesale, Product, $filter, $location)
 	}
 }
 
-function WholesaleBillCtrl($scope, Wholesale, $routeParams, Payment)
+function WholesaleBillCtrl($scope, Wholesale, $routeParams, Payment, Store)
 {
+	Store.load();
 	Wholesale.data.load();
 	$scope.bill = Wholesale.findBill({id:$routeParams.id});
 	$scope.payment_total = Payment.getTotal($scope.bill.products, 0);

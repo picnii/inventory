@@ -1,0 +1,24 @@
+<h1>Load Info</h1>
+ID:{{Store.branch_id}} Name: {{Store.name}} <br/>
+<img ng-src="{{Store.logo}}">
+
+<h2>Product</h2>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Type</th>
+			<th>Stock</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat ="item in branch.inventories">
+			<td>{{item.name}}</td>
+			<td>{{item.type}}</td>
+			<td>{{item.count}}</td>
+		</tr>
+	</tbody>
+</table>
+<h2>Recent sales</h2>
+Amount :{{sale.amount | currency:Store.currency}}<br/>
+Create Time : {{sale.create_time }}<br/>

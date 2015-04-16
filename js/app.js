@@ -1,10 +1,13 @@
 var WIDGET_PATH = ""
+var SERVER_PATH = "http://localhost/npop.in.th/zenpos/web/";
 var app = angular.module('pos', [
   "widget",
   "component",
   "ngRoute",
   "mobile-angular-ui",
-  "localData"
+  "localData",
+  "storeService",
+  "testData"
 ]).config(function($routeProvider) {
       $routeProvider.when('/', {
         // ...
@@ -70,6 +73,12 @@ var app = angular.module('pos', [
         // ...
          templateUrl: 'pages/wholesale/bill.html',
          controller: 'WholesaleBillCtrl'
+      }).when('/test', {
+        templateUrl: 'pages/test.html',
+        controller: 'TestCtrl'
+      }).when('/load', {
+        templateUrl: 'pages/load.html',
+        controller: 'LoadCtrl'
       });
       // ...
   });

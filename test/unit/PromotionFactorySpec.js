@@ -130,8 +130,7 @@ describe('Unit: Promotion Factory', function() {
         conditions:[],
         reward:{}
       };
-      console.log("========COOL xBEANS==========")
-      console.log(payment_total)
+      
     })
 
     it('should be able to do discount_amount from buying amount ', function()

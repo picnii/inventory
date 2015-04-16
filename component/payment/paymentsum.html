@@ -3,6 +3,7 @@
 				<th>ID</th>
 				<th>Name</th>
 				<th>Count</th>
+				<th>Unit Price</th>
 				<th>Price</th>
 			</thead>
 			<tbody>
@@ -11,21 +12,22 @@
 					<td>{{item.name}}</td>
 					<td>{{item.count}}</td>
 					<td class="txt-right">{{item.price | currency:Store.currency}}</td>
+					<td class="txt-right">{{item.price * item.count | currency:Store.currency}}</td>
 				</tr>
 				<tr class="subtotal">
-					<td colspan="3">Sub total</td>
+					<td colspan="4">Sub total</td>
 					<td class="txt-right">{{subTotalAmount | currency:Store.currency}}</td>
 				</tr>
 				<tr class="discount">
-					<td colspan="3">Discount</td>
+					<td colspan="4">Discount</td>
 					<td class="txt-right">{{discount | currency:Store.currency}}</td>
 				</tr>
 				<tr class="tax">
-					<td colspan="3" class="percent">Tax {{tax}}%</td>
+					<td colspan="4" class="percent">Tax {{tax}}%</td>
 					<td class="amount txt-right">{{taxAmount | currency:Store.currency }}</td>
 				</tr>
 				<tr class="total">
-					<td colspan="3">Total Due</td>
+					<td colspan="4">Total Due</td>
 					<td class="txt-right">{{total | currency:Store.currency}}</td>
 				</tr>
 			</tbody>

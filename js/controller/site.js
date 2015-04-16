@@ -79,27 +79,47 @@ function OrderCtrl($scope, $location, $routeParams, Bill, Product)
 
 }
 
-function PaymentCtrl($scope, $location, $routeParams, Bill, Payment, $timeout, Product)
+function PaymentCtrl($scope, $location, $routeParams, Bill, Payment, $timeout, Product, Promotion)
 {
+	Promotion.data.load();
 	$scope.bill = Bill.get($routeParams.id);
 	$scope.orders = $scope.bill.products;
 	$scope.Payment = Payment.get();
-	$scope.discount = 0;
+	
 	$scope.paid_bill = {bill:{products:[]}};
+	$scope.reward = Promotion.getReward($scope.orders)
+	console.log($scope.reward)
+	if($scope.reward.status)
+		$scope.discount = $scope.reward.discount;
+	else
+		$scope.discount = 0;
 	/*console.log('Start Payment')
 	console.log(Product.query())
 	console.log($scope.bill)*/
+	/*if(_.isNumber(_credit))
+      {
+        discount = _credit;
+        if(_.isObject(_discount))
+          reward = _discount
+      }else if(_.isObject(_credit))
+      {
+        credit = _credit;
+        if(_.isNumber(_discount))
+          discount = _discount;
+        if(_.isObject(reward))
+          reward = _reward
+      }*/
 	
 	$scope.print =function(amount, credit){
 		
 		if(_.isObject(credit) && credit!= null)
 		{
 			//console.log('with credit')
-			Bill.paid($scope.bill.id, amount, credit)
+			Bill.paid($scope.bill.id, amount, credit, $scope.discount)
 		}else
 		{
 			//console.log('without credit')
-			Bill.paid($scope.bill.id, amount)
+			Bill.paid($scope.bill.id, amount, $scope.discount)
 		}
 		
 		var paid_bills = Bill.findAllPaidBill();
@@ -114,36 +134,17 @@ function PaymentCtrl($scope, $location, $routeParams, Bill, Payment, $timeout, P
 	}
 }
 
-function ReportCtrl($scope)
-{
-	$scope.sales = [
-		{name:'Pomade1', amount:20},
-		{name:'Pomade2', amount:24},
-		{name:'Pomade3', amount:45},
-		{name:'Pomade4', amount:60},
-		{name:'Pomade5', amount:80}
-	]
-
-	$scope.fields = [
-		{name:"Name", type:"text", slug:'name'},
-		{name:"Amount", type:"number", slug:'amount'}
-	]
-
-	$scope.closeShop =function(){
-		alert("จำลอง ส่งข้อมูลไปสาขาแม่")
-	}
-}
 
 
 
-function BillCtrl($scope, Bill)
+function BillCtrl($scope, Bill, Payment)
 {
 	$scope.fields = [
 		{name:"Id", type:"text", slug:'id'},
 		{name:"Time", type:"text", slug:'create_time'},
 		{name:"Amount", type:"number", slug:'amount'}
 	];
-Bill.data.load();
+	Bill.data.load();
 	$scope.bills = Bill.findAllPaidBill();
 
 
@@ -162,7 +163,7 @@ function UserCtrl($scope, User)
 	$scope.users = User.query();
 }
 
-function BillItemCtrl($scope, Bill, $routeParams, $location)
+function BillItemCtrl($scope, Bill, $routeParams, $location, Store)
 {
 	$scope.id = $routeParams.id
 	Bill.data.load();
@@ -174,8 +175,8 @@ function BillItemCtrl($scope, Bill, $routeParams, $location)
 
 	$scope.deleteBill = function()
 	{
-		var password = prompt('To cancle please retype a password');
-		if(password == "1234")
+		var password = prompt('Manager Password');
+		if(password == Store.get().manager_password)
 		{
 			Bill.refund($scope.id)
 			console.log(Bill.findAllPaidBill({id:$scope.id}))
@@ -251,4 +252,168 @@ function PromotionCreateCtrl($scope, $location, Promotion, Product)
 
 		$location.path('/promotion');
 	}
+}
+
+function LoadCtrl($scope, Branch, Bill, Store, Product, Promotion)
+{
+	$scope.branch_id = ''
+	$scope.fields = [
+		
+		{name:"Name", type:"text", slug:'name'},
+		{name:"Type", type:"text", slug:'type'},
+		
+		{name:"Stock", type:"number", slug:'count'}
+	]
+	
+	$scope.init = function(branch_id)
+	{
+		$scope.branch_id = branch_id
+		Branch.get({id:$scope.branch_id}, function(branch){
+			//load Store
+			$scope.branch = branch
+			Store.init({name:branch.name, branch_id:branch_id, logo:branch.logo, manager_password:branch.manager_password, tax_percent:branch.tax_percent});
+			Product.init(branch.inventories)
+			Promotion.data.reset();
+			$scope.sale = Branch.getSale({id:$scope.branch_id}, function(){
+				//load old Bill?
+				$scope.Store = Store.get();
+			})
+
+		});	
+		
+		
+		
+	}
+	Branch.login(function(data){
+		if(data.status == "complete")
+		{
+			$scope.init(data.branch_id);
+		}
+	})
+}
+
+
+function ReportCtrl($scope,  Branch, Bill, Store, Product, Wholesale)
+{
+	Bill.data.load();
+	$scope.sales = Bill.findAllPaidBill();
+	$scope.wholesale_sales= Wholesale.findAllBill();
+
+	$scope.combine_sales = $scope.sales;
+	$scope.Store = Store.get();;
+	$scope.fields = [
+		{name:"Name", type:"text", slug:'id'},
+		{name:"Amount", type:"number", slug:'amount'}
+	]
+
+	$scope.closeShop =function(){
+
+		var log = {};
+		log.retail_bills = $scope.sales;
+		log.wholesale_bills = $scope.wholesale_sales;
+
+		var mylog = JSON.stringify(log);
+		var products = Product.query();
+		//alert("จำลอง ส่งข้อมูลไปสาขาแม่")
+		console.log('sending');
+		var sum = Bill.sumAllPaidBill();
+		sum += Wholesale.sumAllPaidBill();
+		console.log(products)
+		console.log({id:Store.get().branch_id, log:mylog});
+		Branch.updateSale({"id":Store.get().branch_id, amount:sum, log:mylog}, function(data){
+			console.log('data sale');
+			console.log(data)
+			if(data.result)
+				Branch.updateProduct({"id":Store.get().branch_id, products:products}, function(data){
+					
+					Bill.data.reset();
+				})
+				
+		});
+	}
+}
+
+function TestCtrl($scope, Branch, Bill, Store, Product)
+{
+	$scope.branch_id = ''
+	$scope.init = function(branch_id)
+	{
+		$scope.branch_id = branch_id
+		Branch.get({id:$scope.branch_id}, function(branch){
+			//load Store
+			$scope.test = branch
+			Store.init({name:branch.name});
+			Product.init(branch.inventories)
+			$scope.sale = Branch.getSale({id:$scope.branch_id}, function(){
+				//load old Bill?
+
+
+			})
+
+		});	
+		
+		
+		
+	}
+	Branch.login(function(data){
+		if(data.status == "complete")
+		{
+			$scope.init(data.branch_id);
+		}
+	})
+
+	$scope.updateSale = function()
+	{
+		Bill.data.load();
+		var real_data = Bill.findAllPaidBill();
+		var mylog = JSON.stringify(real_data);
+		var products = Product.query();
+		console.log('sending');
+		var sum = Bill.sumAllPaidBill();
+		console.log(products)
+		console.log({id:$scope.branch_id+"", log:mylog});
+		Branch.updateSale({"id":$scope.branch_id, amount:sum, log:mylog}, function(data){
+			console.log('data sale');
+			console.log(data)
+			if(data.result)
+				Branch.updateProduct({id:$scope.branch_id, products:products}, function(data){
+					console.log('data products');
+					console.log(data)
+					$scope.init($scope.branch_id);		
+				})
+				
+		});
+	}
+	/*$scope.branch_id = ''
+	$scope.init = function(branch_id)
+	{
+		$scope.branch_id = branch_id
+		$scope.test = Test.get({id:$scope.branch_id});	
+		$scope.sale = Test.getSale({id:$scope.branch_id})
+	}
+
+	//
+	TestLogin.login(function(data){
+		if(data.status == "complete")
+		{
+			$scope.init(data.branch_id);
+		}
+	})
+
+	$scope.updateSale = function()
+	{
+		Bill.data.load();
+		var real_data = Bill.findAllPaidBill();
+		var mylog = JSON.stringify(real_data);
+		console.log('sending')
+		console.log({id:$scope.branch_id+"", log:mylog})
+		Test.updateSale({"id":$scope.branch_id +"", log:mylog}, function(data){
+			console.log('data');
+			console.log(data);
+			$scope.init($scope.branch_id);	
+		})
+
+		
+	}*/
+	
 }

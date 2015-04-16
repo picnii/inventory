@@ -22,8 +22,6 @@
 			  	<div>{{bill.create_time}}</div>
 			  	<div class="bgheader">เลขประจำตัวผู้เสียภาษี</div>
 			  	<div>0105557129765</div>
-			  	<div>Terms: NET30</div>
-			  	<div>Due Date: 26 Oct 2014</div>
 			</div>
 		</div>
 	</div>
@@ -84,18 +82,16 @@
 		
 			<div>Subtotal</div>
 			<div>Shipping</div>
-			<div>Total</div>
-			<div>Paid</div>
-			<div><strong>Balance Due</strong></div>
+			<div><b>Total</b></div>
+			
 		
 	</div>
 	<div class="col-xs-2">
 
 		<div>{{payment_total.actual_subtotal | currency:Store.currency}}</div>
-		<div>{{0 | currency:Store.currency}}</div>
-		<div>{{payment_total.total | currency:Store.currency }}</div>
-		<div>{{payment_total.total | currency:Store.currency}}</div>
-		<div><strong>{{0 | currency:Store.currency}}</strong></div>
+		<div>{{bill.customer.ship_cost | currency:Store.currency}}</div>
+		<div>{{payment_total.actual_subtotal + bill.customer.ship_cost | currency:Store.currency }}</div>
+		
 	</div>
 	</div>
 

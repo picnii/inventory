@@ -1,27 +1,29 @@
-angular.module('localData', [])
-.factory('Store', function(){
-  return {
-    currency:'฿',
-    name:'The Pommade Shop',
-    address:
-    {
-      name:'สำนักงานใหญ่',
-      lines: [
-        '17/99 ม.4 ถ.ประชาชาชื่น',
-        'แขวงทุ่งสองห้อง เขตหลักสี่',
-        'กรุงเทพฯ 10210'
-      ]
-    },
-    phones:[
-      {name:'mobile1', no:'0956165994'},
-      {name:'mobile2', no:'0955499265'},
-      {name:'landline', no:'029828489'}
-    ],
-    email:'thaipomadeshop@gmail.com',
-    website:'www.thaipomadeshop.com',
-    logo:'http://placehold.it/200x200'
-  }
+angular.module('testData', ['ngResource']).
+factory('Test', function ($resource) {
+  return $resource('http://localhost/npop.in.th/zenpos/web/api/branches/:id/:action/:subaction', {}, {
+      getSale: {method:'GET', params:{'action':'sale'},  isArray:false},
+      updateSale: {method:'POST', params:{'id':'@id',  'action':'sale', 'subaction':'update'},  isArray:false},
+      
+    });
+}).
+factory('TestLogin', function ($resource) {
+  return $resource('http://localhost/npop.in.th/zenpos/web/branch/info', {}, {
+      login: {method:'GET',  isArray:false}
+    });
+
 })
+
+angular.module('storeService', ['ngResource']).
+factory('Branch', function ($resource) {
+  return $resource('http://localhost/npop.in.th/zenpos/web/api/branches/:id/:action/:subaction', {}, {
+      login: {method:'GET',params:{'id':"info"},   isArray:false},
+      getSale: {method:'GET', params:{'action':'sale'},  isArray:false},
+      updateSale: {method:'POST', params:{'id':'@id',  'action':'sale', 'subaction':'update'},  isArray:false},
+      updateProduct: {method:'POST', params:{'id':'@id',  'action':'product', 'subaction':'update'},  isArray:false}
+    });
+})
+
+angular.module('localData', [])
 .factory('LocalMemory', function(){
 
     return {
@@ -48,17 +50,108 @@ angular.module('localData', [])
       }
     }
 })
-.factory('Product', function(Promotion){
+.factory('Store', function(LocalMemory){
+  STORAGE_NAME = "STORE_INFO";
+  var store = {
+    currency:'฿',
+    name:'The Pommade Shop',
+    address:
+    {
+      name:'สำนักงานใหญ่',
+      lines: [
+        '17/99 ม.4 ถ.ประชาชาชื่น',
+        'แขวงทุ่งสองห้อง เขตหลักสี่',
+        'กรุงเทพฯ 10210'
+      ]
+    },
+    phones:[
+      {name:'mobile1', no:'0956165994'},
+      {name:'mobile2', no:'0955499265'},
+      {name:'landline', no:'029828489'}
+    ],
+    email:'thaipomadeshop@gmail.com',
+    website:'www.thaipomadeshop.com',
+    logo:'http://placehold.it/200x200',
+  }
+
+
+
+  return  {
+    load:function()
+    {
+      store = LocalMemory.load(STORAGE_NAME);
+    },
+    get:function()
+    {
+      return store;
+    },
+    init:function(new_store, callback)
+    {
+      console.log(new_store)
+      for(var key in new_store)
+      {
+        console.log(key)
+        store[key]  = new_store[key];
+      }
+      console.log(store);
+      LocalMemory.save(STORAGE_NAME, store)
+      if(typeof(callback) == 'function')
+        callback();
+    }
+  };
+})
+.factory('Product', function(Promotion, LocalMemory){
   var products = [{"id":"1","name":"Js Sloane Heavywight 4oz.","type":"Pomade","price":690,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":520},{"from":36,"to":48,"price":500},{"from":60,"price":480}],"count":100,"code":"123456789","condition":null},{"id":"2","name":"Js Sloane mediumwight 4oz.","type":"Pomade","price":690,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":520},{"from":36,"to":48,"price":500},{"from":60,"price":480}],"count":100,"code":"","condition":null},{"id":"3","name":"Js Sloane Heavywight 16oz.","type":"Pomade","price":2200,"hasCondition":true,"minumWholeSales":1,"item_ranges":[{"from":12,"to":24,"price":1950},{"from":36,"to":48,"price":1950},{"from":60,"price":1950}],"count":100,"code":"","condition":{"item_id":"1","count":12}},{"id":"4","name":"Js Sloane mediumwight 16oz.","type":"Pomade","price":2200,"hasCondition":true,"minumWholeSales":1,"item_ranges":[{"from":12,"to":24,"price":1950},{"from":36,"to":48,"price":1950},{"from":60,"price":1950}],"count":100,"code":"","condition":{"item_id":"2","count":12}},{"id":"5","name":"Layrite Super Hold 4oz.","type":"Pomade","price":680,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":520},{"from":36,"to":48,"price":500},{"from":60,"price":480}],"count":100,"code":"","condition":null},{"id":"6","name":"Layrite Original 4oz.","type":"Pomade","price":680,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":520},{"from":36,"to":48,"price":500},{"from":60,"price":480}],"count":100,"code":"","condition":null},{"id":"7","name":"Layrite Super Hold 32oz.","type":"Pomade","price":4250,"hasCondition":true,"minumWholeSales":1,"item_ranges":[{"from":12,"to":24,"price":3850},{"from":36,"to":48,"price":1950},{"from":60,"price":1950}],"count":100,"code":"","condition":{"item_id":"5","count":12}},{"id":"8","name":"Layrite Original 32oz.","type":"Pomade","price":4250,"hasCondition":true,"minumWholeSales":1,"item_ranges":[{"from":12,"to":24,"price":3850},{"from":36,"to":48,"price":1950},{"from":60,"price":1950}],"count":100,"code":"","condition":{"item_id":"6","count":12}},{"id":"9","name":"Bona Fide Superior Hold 4oz.","type":"Pomade","price":650,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":480},{"from":36,"to":48,"price":450},{"from":60,"price":420}],"count":100,"code":"","condition":null},{"id":"10","name":"Bona Fide Fiber Hold 4oz.","type":"Pomade","price":680,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":500},{"from":36,"to":48,"price":480},{"from":60,"price":450}],"count":100,"code":"","condition":null},{"id":"11","name":"Bona Fide Superior Hold 32oz.","type":"Pomade","price":3950,"hasCondition":true,"minumWholeSales":1,"item_ranges":[{"from":12,"to":24,"price":3250},{"from":36,"to":48,"price":3250},{"from":60,"price":3250}],"count":100,"code":"","condition":{"item_id":"9","count":12}},{"id":"12","name":"Bona Fide Fiber Hold 32oz.","type":"Pomade","price":4250,"hasCondition":true,"minumWholeSales":1,"item_ranges":[{"from":12,"to":24,"price":3850},{"from":36,"to":48,"price":3850},{"from":60,"price":3850}],"count":100,"code":"","condition":{"item_id":"10","count":12}},{"id":"13","name":"Shiner Gold Heavy Hold 4oz.","type":"Pomade","price":590,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":480},{"from":36,"to":48,"price":450},{"from":60,"price":420}],"count":100,"code":"","condition":null},{"id":"14","name":"Shiner Gold Psycho Hold 4oz.","type":"Pomade","price":680,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":500},{"from":36,"to":48,"price":480},{"from":60,"price":450}],"count":100,"code":"","condition":null},{"id":"15","name":"Shiner Gold Matte 4oz.","type":"Pomade","price":680,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":500},{"from":36,"to":48,"price":480},{"from":60,"price":450}],"count":100,"code":"","condition":null},{"id":"16","name":"Shiner Gold Heavy Hold 32oz.","type":"Pomade","price":3950,"hasCondition":true,"minumWholeSales":1,"item_ranges":[{"from":12,"to":24,"price":3250},{"from":36,"to":48,"price":3250},{"from":60,"price":3250}],"count":100,"code":"","condition":{"item_id":"13","count":12}},{"id":"17","name":"Shiner Gold Psycho Hold 32oz.","type":"Pomade","price":4250,"hasCondition":true,"minumWholeSales":1,"item_ranges":[{"from":12,"to":24,"price":3850},{"from":36,"to":48,"price":3850},{"from":60,"price":3850}],"count":100,"code":"","condition":{"item_id":"14","count":12}},{"id":"18","name":"Shiner Gold Matte 32oz.","type":"Pomade","price":4250,"hasCondition":true,"minumWholeSales":1,"item_ranges":[{"from":12,"to":24,"price":3580},{"from":36,"to":48,"price":3580},{"from":60,"price":3580}],"count":100,"code":"","condition":{"item_id":"15","count":12}},{"id":"19","name":"Reuzel Red 4oz.","type":"Pomade","price":690,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":520},{"from":36,"to":48,"price":500},{"from":60,"price":480}],"count":100,"code":"","condition":null},{"id":"20","name":"Reuzel Green 4oz.","type":"Pomade","price":690,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":520},{"from":36,"to":48,"price":500},{"from":60,"price":480}],"count":100,"code":"","condition":null},{"id":"21","name":"Reuzel Red 12oz.","type":"Pomade","price":1950,"hasCondition":true,"minumWholeSales":1,"item_ranges":[{"from":12,"to":24,"price":1650},{"from":36,"to":48,"price":1650},{"from":60,"price":1650}],"count":100,"code":"","condition":{"item_id":"19","count":12}},{"id":"22","name":"Reuzel Green 12oz.","type":"Pomade","price":1950,"hasCondition":true,"minumWholeSales":1,"item_ranges":[{"from":12,"to":24,"price":1650},{"from":36,"to":48,"price":1650},{"from":60,"price":1650}],"count":100,"code":"","condition":{"item_id":"20","count":12}},{"id":"23","name":"Dax Wave & Groom 3.5oz.","type":"Pomade","price":480,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":300},{"from":36,"to":48,"price":280},{"from":60,"price":250}],"count":100,"code":"","condition":null},{"id":"24","name":"Dax Wave & Groom 1.25oz.","type":"Pomade","price":229,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":170},{"from":36,"to":48,"price":160},{"from":60,"price":150}],"count":100,"code":"","condition":null},{"id":"25","name":"Dax Hair wax (washable)","type":"Pomade","price":480,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":300},{"from":36,"to":48,"price":280},{"from":60,"price":250}],"count":100,"code":"","condition":null},{"id":"26","name":"Dax Awesome Hold","type":"Pomade","price":480,"hasCondition":false,"minumWholeSales":"-","item_ranges":[],"count":100,"code":"","condition":null},{"id":"27","name":"Layrite Trucker Hat","type":"Merchandise","price":500,"hasCondition":false,"minumWholeSales":"-","item_ranges":[],"count":100,"code":"","condition":null},{"id":"28","name":"Layrite T-Shirt","type":"Merchandise","price":890,"hasCondition":false,"minumWholeSales":"-","item_ranges":[],"count":100,"code":"","condition":null},{"id":"29","name":"Layrite Comb","type":"Merchandise","price":350,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":250},{"from":36,"to":48,"price":250},{"from":60,"price":250}],"count":100,"code":"","condition":null},{"id":"30","name":"Layrite Barber Cap","type":"Merchandise","price":890,"hasCondition":false,"minumWholeSales":"-","item_ranges":[],"count":100,"code":"","condition":null},{"id":"31","name":"Shiner Gold T-Shirt","type":"Merchandise","price":650,"hasCondition":false,"minumWholeSales":"-","item_ranges":[],"count":100,"code":"","condition":null},{"id":"32","name":"Schorem T-Shirt","type":"Merchandise","price":890,"hasCondition":false,"minumWholeSales":"-","item_ranges":[],"count":100,"code":"","condition":null},{"id":"33","name":"Schorem Poster","type":"Merchandise","price":999,"hasCondition":false,"minumWholeSales":"-","item_ranges":[],"count":100,"code":"","condition":null},{"id":"34","name":"Bonafide T-Shirt","type":"Merchandise","price":650,"hasCondition":false,"minumWholeSales":"-","item_ranges":[],"count":100,"code":"","condition":null},{"id":"35","name":"Switch Comb","type":"Merchandise","price":350,"hasCondition":false,"minumWholeSales":12,"item_ranges":[{"from":12,"to":24,"price":250},{"from":36,"to":48,"price":250},{"from":60,"price":250}],"count":100,"code":"","condition":null}];
+  var STORAGE_NAME = "PRODUCT_STORAGE"
   return {
+    data:{
+      STORAGE_NAME:STORAGE_NAME,
+      save:function(){
+        return LocalMemory.save(STORAGE_NAME, products);
+      },
+      load:function()
+      {
+        var load_result = LocalMemory.load(STORAGE_NAME);
+        if(_.isArray(load_result))
+        {
+          products = load_result
+          return true;
+        }
+        return false;
+      },
+      reset:function()
+      {
+        LocalMemory.reset(STORAGE_NAME);
+        return true;
+      }
+    },    
+    init:function(new_products)
+    {
+      console.log('add new')
+      console.log(new_products)
+      products = new_products;
+      LocalMemory.save(STORAGE_NAME, products);
+    },
     query:function()
     {
       return products;
     },
+    find:function(product)
+    {
+      return _.find(products, product);
+    },
     get:function(product)
     {
-      return _.find(products, {id:product.id});
+      return this.find(product);
     },
+    giveReward:function(reward)
+    {
+      if(_.isObject(reward) && reward.status)
+        _(reward.items).forEach(function(item){
+          var product = this.find({id:item.item_id});
+          product.count -= item.amount;
+        })
+    }, 
     returnProduct:function(items)
     {
        var amount = 0;
@@ -73,6 +166,7 @@ angular.module('localData', [])
           products[index].count += item.count;
         }
       })
+       LocalMemory.save(STORAGE_NAME, products);
       return amount;
     },
     sold:function(items)
@@ -94,15 +188,6 @@ angular.module('localData', [])
     save:function(product)
     {
 
-    },
-    getAll:function(){
-      return [
-        {id:1, name:"เยลสุดสวย", type:"เยล", picture:"http://placehold.it/100x100", price:50, description:"nope", import_cost:20, count:20 },
-        {id:2, name:"เยลลี่", type:"เยล", picture:"http://placehold.it/100x100", price:60, description:"nope", import_cost:15, count:10 },
-        {id:3, name:"เยลโจ๊กคะนอ", type:"เยล", type:"เยล", picture:"http://placehold.it/100x100", price:70, description:"nope", import_cost:34, count:30 },
-        {id:4, name:"ยอโค๊กับเจล", type:"เยล", picture:"http://placehold.it/100x100", price:80, description:"nope", import_cost:56, count:40 },
-        {id:5, name:"เจลนี่แหละ", type:"เยล", picture:"http://placehold.it/100x100", price:90, description:"nope", import_cost:40, count:50 }
-      ];
     },
     getListItems:function()
     {
@@ -189,6 +274,15 @@ angular.module('localData', [])
     {
       return paid_bills;
     },
+    sumAllPaidBill:function(arg)
+    {
+      var sum = 0;
+      for(var i =0; i < paid_bills.length; i++)
+      {
+        sum += paid_bills[i].amount;
+      }
+      return sum;
+    },
     refund:function(id)
     {
       console.log('cool')
@@ -201,31 +295,24 @@ angular.module('localData', [])
 
       
     },
-    paid:function( id, amount, _credit, _discount)
+    paid:function( id, amount, _credit, _discount, _reward)
     {
-      //paid_obj
-      /*var id = paid_obj.id;
-      var amount = paid_obj.amount;
-      var credit, reward,discount;
-      if(_.isObject(paid_obj.credit))
-        credit = paid_obj.credit;
-      if(_.isObject(paid_obj.reward)) 
-        reward = paid_obj.reward
-      if(_.isUndefined(reward) || reward.status == false)
-        discount = 0;
-      else
-        discount = reward.discount*/
-      var credit, discount = 0;
+      
+      var credit, reward = null, discount = 0;
       if(_.isNumber(_credit))
       {
         discount = _credit;
+        if(_.isObject(_discount))
+          reward = _discount
       }else if(_.isObject(_credit))
       {
         credit = _credit;
         if(_.isNumber(_discount))
           discount = _discount;
+        if(_.isObject(reward))
+          reward = _reward
       }
-      
+
       var bill = _.find(bills, {id:id});
       if(typeof(bill) == 'undefined')
         return -1;
@@ -237,12 +324,18 @@ angular.module('localData', [])
       var create_time = new Date();
       var paid_credit = null
       var payment_total = Payment.getTotal(bill.products, discount);
+
+      console.log("Before na")
       if(amount < payment_total.total)
       {
         //refund cause money
+        console.log("Amount : " + amount);
+        console.log("Total :" + payment_total.total)
         Product.returnProduct(bill.products);
         return -1;
       }
+      Product.giveReward(reward)
+      console.log("After na")
       var payment_credit = null;
       if(_.isObject(credit))
       {
@@ -257,7 +350,8 @@ angular.module('localData', [])
           tax_amount:payment_total.actual_tax_amount,
           discount:discount,
           payment_total:payment_total,
-          credit_total:credit_total
+          credit_total:credit_total,
+          promotion_reward:reward
         })
         
       }else
@@ -271,9 +365,12 @@ angular.module('localData', [])
           tax_amount:payment_total.actual_tax_amount,
           discount:discount,
           payment_total:payment_total,
-          credit_total:null
+          credit_total:null,
+          promotion_reward:reward
         })
+      console.log(paid_bills)
       this.data.save();
+      Product.data.save();
       return new_id;
     }
   }
@@ -296,9 +393,13 @@ angular.module('localData', [])
       for(var i =0; i < orders.length ; i++)
         subtotal += orders[i].price * orders[i].count;
       var taxAmount =  subtotal * payment.tax * 0.01;
-      var total = subtotal * ( 1 + payment.tax * 0.01) - discount;
+      var total = subtotal + taxAmount - discount;
 
-      return {subtotal:Math.ceil(subtotal), actual_subtotal:subtotal, total:Math.ceil(total), actual_total:total, actual_tax_amount:taxAmount};
+      var return_obj = {subtotal:Math.ceil(subtotal), actual_subtotal:subtotal, total:Math.ceil(total), actual_total:total, actual_tax_amount:taxAmount};
+      console.log("return obj")
+      console.log("discount:" + discount)
+      console.log(return_obj)
+      return return_obj
     },
     getCreditTotal:function(total, credit)
     {
@@ -492,6 +593,8 @@ angular.module('localData', [])
         //
         var condition_count = 0;
         var candidate_discount = 0;
+
+        //isValid check about time frame
         _.forEach(promotion.conditions, function(condition){
 
             if(condition.type == self.CON_TYPE_MONEY && paying_amount >= condition.value )
@@ -591,12 +694,20 @@ angular.module('localData', [])
       }
       
       paid_bills.push(bill)
+      Product.data.save();
       this.data.save();
       return bill;
     },
     findAllBill:function()
     {
       return paid_bills;
+    },
+    sumAllPaidBill:function()
+    {
+      var sum = 0;
+      for(var i =0; i < paid_bills.length ;i++)
+        sum += paid_bills[i].amount;
+      return sum;
     },
     findBill:function(object)
     {

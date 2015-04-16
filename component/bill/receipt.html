@@ -1,4 +1,4 @@
-<section>
+<section id="receipt" class="receipt" >
 	<h2>Receipt</h2>
 	<table class="table">
 		<tr class="order-item" ng-repeat="item in paidBill.bill.products">
@@ -28,4 +28,8 @@
 			<td>{{total | currency:Store.currency}}</td>
 		</tr>
 	</table>
+	<div ng-show="paidBill.promotion_reward.status">
+		{{paidBill.promotion_reward.items}}
+	</div>
+	<div class="page-break"></div>
 </section>

@@ -200,7 +200,7 @@ angular.module("component", ['localData'])
 		},
 		link: function (scope, element, attrs)
 		{
-			scope.Store = Store;
+			scope.Store = Store.get();
 			scope.removeItem = function(item)
 			{
 				_.remove(scope.orders, {number:item.number})
@@ -224,7 +224,7 @@ angular.module("component", ['localData'])
 		},
 		link: function (scope, element, attrs)
 		{
-			scope.Store = Store;
+			scope.Store = Store.get();
 			var MODE_BARCODE = 'barcode', MODE_TOUCH  = 'touch';
 			var MODE_GROUP = 'group',  MODE_ITEM = 'item';
 			scope.mode = MODE_BARCODE;
@@ -300,7 +300,8 @@ angular.module("component", ['localData'])
 		},
 		link: function (scope, element, attrs)
 		{
-			scope.Store = Store;
+			scope.Store = Store.get();
+			
 			if(typeof(scope.tax) == "undefined")
 				scope.tax = 0;
 			if(typeof(scope.discount) == "undefined")
@@ -335,7 +336,7 @@ angular.module("component", ['localData'])
 		},
 		link: function (scope, element, attrs)
 		{
-			scope.Store = Store;
+			scope.Store = Store.get();
 			scope.target = 'bill';
 			if(_.isString(attrs.target))
 			{
@@ -471,7 +472,8 @@ angular.module("component", ['localData'])
 		link: function (scope, element, attrs)
 		{
 			console.log()
-			scope.currency = Store.currency;
+
+			scope.currency = Store.get().currency;
 			scope.percentTxt = ""
 			scope.REWARD_TYPE_ITEM_BACK = Promotion.REWARD_TYPE_ITEM_BACK;
 			scope.REWARD_TYPE_DISCOUNT_AMOUNT = Promotion.REWARD_TYPE_DISCOUNT_AMOUNT;
@@ -566,7 +568,9 @@ angular.module("component", ['localData'])
 		},
 		link: function (scope, element, attrs)
 		{
-			scope.Store = Store;
+			
+
+			scope.Store = Store.get();
 			scope.calculate = function()
 			{
 				scope.cssCredit = "hide";
@@ -586,6 +590,10 @@ angular.module("component", ['localData'])
 					scope.creditAmount = credit_total.credit_amount;
 					scope.total = credit_total.total;
 				}
+				var data_count = scope.paidBill.bill.products.length;
+				var height = data_count * 21 + 200 ;
+				document.querySelector('style').textContent +=
+    "@media print { div.app { height: " + height +"px; }}";
 			}
 			scope.calculate();
 			scope.$watch('paidBill', function(newValue){
@@ -605,7 +613,7 @@ angular.module("component", ['localData'])
 		},
 		link: function (scope, element, attrs)
 		{
-			scope.Store = Store;
+			scope.Store = Store.get();
 			scope.isSearchName = false;
 			scope.isSearchType = false;
 			scope.clickSearchName = function()
@@ -711,12 +719,35 @@ angular.module("component", ['localData'])
 		},
 		link: function (scope, element, attrs)
 		{
-			scope.Store = Store;
+			scope.Store = Store.get();
 			if(_.isUndefined(scope.bill.discount))
 				scope.bill.discount = 0;
 			scope.payment_total = Payment.getTotal(scope.bill.products, scope.bill.discount)
 
 		}
 
+	}
+}).directive("promotionItemBacks", function(Product){
+	return {
+		restrict: "E",
+		templateUrl: "component/promotion/itembacks.html",
+		replace: true,
+		scope: {
+			reward:"="
+		},
+		link: function (scope, element, attrs)
+		{
+			scope.items = [];
+			if(_.isObject(scope.reward) && scope.reward.status)
+			{
+				_(scope.reward.items).forEach(function(item){
+					var product = Product.find({id:item.item_id})
+					console.log('push');
+					console.log(product)
+					scope.items.push({name:product.name, amount:item.amount});
+				})
+
+			}
+		}
 	}
 });

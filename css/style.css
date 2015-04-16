@@ -28,6 +28,10 @@ section.show-print
 		display: block;
 	}
 
+	.page-break{
+		page-break-after: always;
+	}
+
 }
 
 .bill-wrap
@@ -247,4 +251,21 @@ nav.scan .barcode-input, nav.scan .cash-input
 .table>tbody>tr>td.txt-right
 {
 	padding-right: 20px;
+}
+
+@media print {
+	
+    div.app
+    {
+    	font-size: 50%;
+    	width:350px;
+    	min-height:1px;
+    	
+    	
+    	
+    }
+    .receipt h2, .receipt table
+    {
+    	font-size: 1.5em;
+    }
 }

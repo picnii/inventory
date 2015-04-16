@@ -15,7 +15,7 @@
 	 	<button class="btn btn-lg btn-info" ng-click="reward.addItem()">+ Item</button>
 	</div>
 	<div ng-if="reward.type == REWARD_TYPE_DISCOUNT_AMOUNT || reward.type == REWARD_TYPE_DISCOUNT_PERCENT">
-		Get discount <input type="number" ng-model="reward.discount.value"> 
+		Get discount <input type="number" ng-model="reward.discount"> 
 		<span ng-show="reward.type == REWARD_TYPE_DISCOUNT_PERCENT">%</span>
 		<span ng-show="reward.type == REWARD_TYPE_DISCOUNT_AMOUNT ">{{currency}}.</span>
 	</div>
